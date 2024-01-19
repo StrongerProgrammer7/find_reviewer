@@ -1,9 +1,10 @@
-import React,{useState,createContext } from 'react';
+import React,{useState,createContext, useEffect } from 'react';
 import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
 import MyPopup from './components/UI/Popup/MyPopup';
 import { Form } from 'react-bootstrap';
 import { IDataUser } from './store/interfaces/IDataUser';
+import { setDataContextFromLocalStorage } from './helper';
 
 /*
 Функционал:
@@ -42,6 +43,11 @@ function App()
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
+  useEffect(()=>
+  {
+    setDataContextFromLocalStorage(user,'userdata');
+  },[])
   return (
       <Context.Provider
       value={
