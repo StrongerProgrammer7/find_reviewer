@@ -6,15 +6,21 @@ import { IWorkModal } from '../../../store/interfaces/IWorkModal';
 import { IDataUser } from '../../../store/interfaces/IDataUser';
 import useGetComplexObject from '../../../hooks/customHooks/useGetComplexObject';
 import { MyInput } from '../Inputs/MyInput';
-
-
-
+import { IInputs } from '../../../store/interfaces/IInputs';
 
 const dataFromStringToArray = (data:string,separator:string=',') =>
 {
     return data.split(separator);
 }
 
+const saveChanges = (user:IDataUser,data:IInputs,handleClose:(() => void) | undefined) =>
+{
+    user.setLogin(data.loginInput);
+    user.setRepo(data.repoInput);
+    user.setBlacklist(dataFromStringToArray(data.blacklistInput));
+    if(handleClose)
+        handleClose();
+}
 const MyPopup:FC<IWorkModal> = ({ show, handleClose}: IWorkModal) => 
 {
     const user:IDataUser = useGetComplexObject();
@@ -63,15 +69,14 @@ const MyPopup:FC<IWorkModal> = ({ show, handleClose}: IWorkModal) =>
             <Button variant="secondary" onClick={handleClose}>
                 Close
             </Button>
-            <Button variant="primary" onClick={()=>
+            <Button variant="primary" onClick={()=> 
+            saveChanges(user,
             {
-                user.setLogin(loginInput);
-                user.setRepo(repoInput);
-                user.setBlacklist(dataFromStringToArray(blacklistInput));
-                
-                if(handleClose)
-                    handleClose();
-            }}>
+                loginInput,
+                repoInput,
+                blacklistInput
+            },
+            handleClose)}>
                 Save Changes
             </Button>
             </Modal.Footer>
