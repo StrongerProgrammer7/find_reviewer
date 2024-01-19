@@ -6,21 +6,10 @@ import { IWorkModal } from '../../../store/interfaces/IWorkModal';
 import { IDataUser } from '../../../store/interfaces/IDataUser';
 import useGetComplexObject from '../../../hooks/customHooks/useGetComplexObject';
 import { MyInput } from '../Inputs/MyInput';
-import { IInputs } from '../../../store/interfaces/IInputs';
+import { saveChanges } from './utils';
 
-const dataFromStringToArray = (data:string,separator:string=',') =>
-{
-    return data.split(separator);
-}
 
-const saveChanges = (user:IDataUser,data:IInputs,handleClose:(() => void) | undefined) =>
-{
-    user.setLogin(data.loginInput);
-    user.setRepo(data.repoInput);
-    user.setBlacklist(dataFromStringToArray(data.blacklistInput));
-    if(handleClose)
-        handleClose();
-}
+
 const MyPopup:FC<IWorkModal> = ({ show, handleClose}: IWorkModal) => 
 {
     const user:IDataUser = useGetComplexObject();
@@ -39,7 +28,7 @@ const MyPopup:FC<IWorkModal> = ({ show, handleClose}: IWorkModal) =>
                 blacklistText += user.blacklist[i]
         
         setBlacklistInput(blacklistText);
-    },[]);
+    },[user.blacklist]);
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
