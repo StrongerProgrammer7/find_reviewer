@@ -4,7 +4,9 @@ import MyButton from './components/UI/Buttons/MyButton';
 import MyPopup from './components/UI/Popup/MyPopup';
 import { Form } from 'react-bootstrap';
 import { IDataUser } from './store/interfaces/IDataUser';
-import { setDataContextFromLocalStorage } from './helper';
+import { setDataContextFromLocalStorage } from './utils/helper';
+import { Octokit } from 'octokit';
+import { GITHUB_TOKEN } from './utils/const';
 
 /*
 Функционал:
@@ -23,6 +25,12 @@ import { setDataContextFromLocalStorage } from './helper';
 */
 
 export const Context = createContext<IDataUser | null>(null);
+
+const octokit = new Octokit(
+  {
+    auth: GITHUB_TOKEN
+  }
+)
 
 function App() 
 {
@@ -47,6 +55,12 @@ function App()
   useEffect(()=>
   {
     setDataContextFromLocalStorage(user,'userdata');
+    // octokit.request("GET  /repos/{owner}/{repo}/issues", 
+    // {
+    //   owner: "octocat",
+    //   repo: "Spoon-Knife"
+    // })
+    // .then(data => console.log);
   },[])
   return (
       <Context.Provider

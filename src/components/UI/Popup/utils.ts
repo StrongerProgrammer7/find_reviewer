@@ -1,4 +1,4 @@
-import { setLocalStorageItem } from "../../../helper";
+import { setLocalStorageItem } from "../../../utils/helper";
 import { IUser } from "../../../store/interfaces/IDataUser";
 import { IInputs } from '../../../store/interfaces/IInputs';
 import { IDataUser } from '../../../store/interfaces/IDataUser';
@@ -10,7 +10,8 @@ const dataFromStringToArray = (data:string,separator:string=',') =>
 
 function recordToLocalStorageStateSettings(user:IUser):void
 {
-    setLocalStorageItem('userdata',user.login + ',' + user.repo + ', [' + user.blacklist + ']');
+
+    setLocalStorageItem('userdata',user.login + ';' + user.repo + '; ' + user.blacklist.toString());
 }
 
 export const saveChanges = (user:IDataUser,data:IInputs,handleClose:(() => void) | undefined):void =>
