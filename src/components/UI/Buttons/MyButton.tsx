@@ -7,16 +7,15 @@ const MyButton:FC<{title:string,modal:IWorkModal}> = ({title,modal}:{title:strin
 {
     return (
         <>
-        <Button variant="primary"
-        className='mt-5'
-        onClick={e=>
-        {
-            if(modal.handleShow)
-                modal.handleShow();
-        }}
-        > {title} </Button>
-        
-       
+            <Button variant="primary"
+            className='mt-5'
+            onClick={e=>
+            {
+                if(modal.handleShow)
+                    modal.handleShow();
+            }}
+            > {title} 
+            </Button>
         </>
     )
 }
