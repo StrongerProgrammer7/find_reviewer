@@ -1,12 +1,11 @@
-import React,{createContext,useMemo,useState} from 'react';
+import React,{useState,createContext } from 'react';
 import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
-import { IDataUser } from './store/interfaces/IDataUser';
 import MyPopup from './components/UI/Popup/MyPopup';
 import { Form } from 'react-bootstrap';
+import { IDataUser } from './store/interfaces/IDataUser';
 
 /*
-
 Функционал:
 - кнопка настроек, по клику на нее можно переключать видимость настроек.
 - в настройках 3 поля:
@@ -21,46 +20,56 @@ import { Form } from 'react-bootstrap';
 Дока по API https://docs.github.com/en/rest.
 
 */
+
 export const Context = createContext<IDataUser | null>(null);
 
 function App() 
 {
+  const [loginUser,setLoginUser] = useState<string>('');
+  const [repoUser,setRepoUser] = useState<string>('');
+  const [blacklistUser,setBlacklistUser] = useState<Array<string>>([]);
+  const user:IDataUser = 
+  {
+    login:loginUser,
+    setLogin: setLoginUser,
+    repo:repoUser,
+    setRepo: setRepoUser,
+    blacklist: blacklistUser,
+    setBlacklist:setBlacklistUser
+  }
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const user:IDataUser = 
-  {
-    login: "complex" ,
-    repo:"TestRepo",
-    blacklist: []
-  }
+
   return (
-    <Context.Provider value={user}>
-      <div className="App">
+      <Context.Provider
+      value={
+        user
+      }>
+        <div className="App">
         <MyButton 
         title='Show settings'
         modal={
           {
-            
             show,
             handleShow}
-        }
+          }
         />
         <MyPopup
         show={show}
         handleClose={handleClose}
         />
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Blacklist</Form.Label>
-                    <Form.Control 
+          <Form.Group className="mb-3">
+              <Form.Label>Blacklist</Form.Label>
+                <Form.Control 
                     type="text" 
                     placeholder="using ,"
                     defaultValue={user.login}
                     />
                 </Form.Group>
       </div>
-    </Context.Provider>
+      </Context.Provider>
   );
 }
 

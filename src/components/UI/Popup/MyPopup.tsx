@@ -1,71 +1,63 @@
 
-import React, { FC,useState } from 'react'
+import React, { FC,useState,useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { IWorkModal } from '../../../store/interfaces/IWorkModal';
 import { IDataUser } from '../../../store/interfaces/IDataUser';
 import useGetComplexObject from '../../../hooks/customHooks/useGetComplexObject';
+import { MyInput } from '../Inputs/MyInput';
 
 
-const debounce = (fn: Function, ms = 300) => 
+
+
+const dataFromStringToArray = (data:string,separator:string=',') =>
 {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    return function (this: any, ...args: any[]) 
-    {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => fn.apply(this, args), ms);
-    };
-  };
+    return data.split(separator);
+}
 
 const MyPopup:FC<IWorkModal> = ({ show, handleClose}: IWorkModal) => 
 {
-    let {login,repo,blacklist}:IDataUser = useGetComplexObject();
+    const user:IDataUser = useGetComplexObject();
     const [loginInput,setLoginInput] = useState<string>('');
     const [repoInput,setRepoInput] = useState<string>('');
     const [blacklistInput,setBlacklistInput] = useState<string>('');
 
+    useEffect(()=>
+    {
+        if(user.blacklist.length===0) return;
+        let blacklistText = '';
+        for(let i =0;i<user.blacklist.length; i++)
+            if(i+1 !== user.blacklist.length)
+                blacklistText += user.blacklist[i] + ',';
+            else
+                blacklistText += user.blacklist[i]
+        
+        setBlacklistInput(blacklistText);
+    },[]);
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
             <Modal.Title>Settings</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Your login</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    placeholder="login"
-                    defaultValue={loginInput}
-                    onChange={e=>
-                    {
-                        setLoginInput(e.target.value);
-                        console.log(loginInput);
-                    }} />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Your repo</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    placeholder="repo"
-                    defaultValue={repoInput}
-                    onChange={e=>
-                    {
-                        setRepoInput(e.target.value);
-                        console.log(repoInput);
-                        
-                    }} />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Blacklist</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    placeholder="using ,"
-                    defaultValue={blacklistInput}
-                    onChange={e=>
-                    {
-                        setBlacklistInput(e.target.value);
-                    }} />
-                </Form.Group>
+                <MyInput 
+                titleLabel='Your login'
+                placeholder='login'
+                _defaultValue={loginInput}
+                setState={setLoginInput}
+                />
+                <MyInput 
+                titleLabel='Your repo'
+                placeholder='repo'
+                _defaultValue={repoInput}
+                setState={setRepoInput}
+                />
+                <MyInput 
+                titleLabel='Blacklist'
+                placeholder='using ,'
+                _defaultValue={blacklistInput}
+                setState={setBlacklistInput}
+                />
             </Modal.Body>
             <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
@@ -73,10 +65,10 @@ const MyPopup:FC<IWorkModal> = ({ show, handleClose}: IWorkModal) =>
             </Button>
             <Button variant="primary" onClick={()=>
             {
-                login = loginInput;
-                repo = repoInput;
-                blacklist.push(blacklistInput);
-                console.log(blacklist,login,repo);
+                user.setLogin(loginInput);
+                user.setRepo(repoInput);
+                user.setBlacklist(dataFromStringToArray(blacklistInput));
+                
                 if(handleClose)
                     handleClose();
             }}>
