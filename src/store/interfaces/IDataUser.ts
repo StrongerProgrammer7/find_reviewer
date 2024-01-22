@@ -12,3 +12,9 @@ export interface IDataUser extends IUser
   setRepo: Dispatch<SetStateAction<string>>,
   setBlacklist:Dispatch<SetStateAction<Array<string>>>
 }
+
+export interface IContributor
+{
+  avatar_url:string,
+  login:string
+}

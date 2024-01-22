@@ -1,12 +1,10 @@
-import React,{useState,createContext, useEffect } from 'react';
+import React,{useState,createContext, useEffect, useRef } from 'react';
 import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
 import MyPopup from './components/UI/Popup/MyPopup';
-import { Form } from 'react-bootstrap';
-import { IDataUser } from './store/interfaces/IDataUser';
-import { setDataContextFromLocalStorage } from './utils/helper';
-import { Octokit } from 'octokit';
-import { GITHUB_TOKEN } from './utils/const';
+import { IContributor, IDataUser } from './store/interfaces/IDataUser';
+import { setDataContextFromLocalStorage, showAndChooseReviewer } from './utils/helper';
+import { Spinner } from 'react-bootstrap';
 
 /*
 Функционал:
@@ -21,22 +19,25 @@ import { GITHUB_TOKEN } from './utils/const';
 - при генерации ревьюера показываем текущего пользователя и перебираемые вами пользователи для ревью.
 
 Дока по API https://docs.github.com/en/rest.
-
+Test:
+hhru
+eslint-config-hh
+ipetropolsky,prizemlenie,Maxim-Do
 */
 
 export const Context = createContext<IDataUser | null>(null);
 
-const octokit = new Octokit(
-  {
-    auth: GITHUB_TOKEN
-  }
-)
+
 
 function App() 
 {
+  const generateReviewer = useRef<null | HTMLImageElement>(null);
   const [loginUser,setLoginUser] = useState<string>('');
   const [repoUser,setRepoUser] = useState<string>('');
   const [blacklistUser,setBlacklistUser] = useState<Array<string>>([]);
+  const [isLoading,setLoading] = useState<boolean>(true);
+  const [readyShowReviewers,setReadyShowReviewers] = useState<boolean>(false);
+  const [reviewer,setReviewer] = useState<IContributor | null>(null);
   const user:IDataUser = 
   {
     login:loginUser,
@@ -55,40 +56,61 @@ function App()
   useEffect(()=>
   {
     setDataContextFromLocalStorage(user,'userdata');
-    // octokit.request("GET  /repos/{owner}/{repo}/issues", 
-    // {
-    //   owner: "octocat",
-    //   repo: "Spoon-Knife"
-    // })
-    // .then(data => console.log);
+    setLoading(false);
   },[])
   return (
       <Context.Provider
       value={
         user
       }>
+        {isLoading
+        ?
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+        :
         <div className="App">
         <MyButton 
         title='Show settings'
-        modal={
-          {
-            show,
-            handleShow}
-          }
+        callback={handleShow}
         />
         <MyPopup
         show={show}
         handleClose={handleClose}
         />
-          <Form.Group className="mb-3">
-              <Form.Label>Blacklist</Form.Label>
-                <Form.Control 
-                    type="text" 
-                    placeholder="using ,"
-                    defaultValue={user.login}
-                    />
-                </Form.Group>
-      </div>
+        <br/>
+        <MyButton
+        title=' Searching reviewer...'
+        callback={()=>
+        {
+          setReviewer(null);
+          setLoading(true);
+          showAndChooseReviewer(
+            user,
+            generateReviewer,
+            setReadyShowReviewers,
+            setReviewer,
+            setLoading,
+          )
+        }}
+        />
+        <br/>
+        </div>
+        }
+        <br/>
+        {readyShowReviewers ? <img ref={generateReviewer} alt='iterationImgs'/> : null}
+        {reviewer 
+          ? 
+            <div>
+              <h1>You: {user.login}</h1>
+              <h1>Reviewer: {reviewer.login}</h1>
+                <img src={reviewer.avatar_url} alt='reviwerImg'/>
+            </div>
+          :
+          null  
+        }
+
+        
       </Context.Provider>
   );
 }

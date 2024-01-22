@@ -1,2 +1,3 @@
 
-export const GITHUB_TOKEN = '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';
+export const GITHUB_TOKEN = process.env.TOKEN_FINE_GRAINED;
+export const GITHUB_CLASSIS_TOKEN = process.env.TOKEN;

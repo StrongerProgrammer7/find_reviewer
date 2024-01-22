@@ -2,6 +2,10 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { Form } from 'react-bootstrap';
 
+function trimSpaces(input: string): string 
+{
+    return input.trim();
+}
 const debounce = (fn: Function, ms = 300,setLoading?:Dispatch<SetStateAction<boolean>> | undefined) => 
 {
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -43,6 +47,7 @@ export const MyInput = (
                 defaultValue={_defaultValue}
                 onChange={e=>
                 {
+                    trimSpaces(e.target.value);
                     debounced(e.target.value);
                 }} />
         </Form.Group>
