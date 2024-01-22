@@ -1,6 +1,5 @@
-export interface IWorkModal
-{
-    show:boolean,
-    handleShow?:()=>void,
-    handleClose?:()=>void,
+export interface IWorkModal {
+  show: boolean;
+  handleShow?: () => void;
+  handleClose?: () => void;
 }

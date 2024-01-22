@@ -1,4 +1,4 @@
-import React,{useState,createContext, useEffect, useRef } from 'react';
+import React, { useState, createContext, useEffect, useRef } from 'react';
 import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
 import MyPopup from './components/UI/Popup/MyPopup';
@@ -27,91 +27,69 @@ ipetropolsky,prizemlenie,Maxim-Do
 
 export const Context = createContext<IDataUser | null>(null);
 
-
-
-function App() 
-{
+function App() {
   const generateReviewer = useRef<null | HTMLImageElement>(null);
-  const [loginUser,setLoginUser] = useState<string>('');
-  const [repoUser,setRepoUser] = useState<string>('');
-  const [blacklistUser,setBlacklistUser] = useState<Array<string>>([]);
-  const [isLoading,setLoading] = useState<boolean>(true);
-  const [readyShowReviewers,setReadyShowReviewers] = useState<boolean>(false);
-  const [reviewer,setReviewer] = useState<IContributor | null>(null);
-  const user:IDataUser = 
-  {
-    login:loginUser,
+  const [loginUser, setLoginUser] = useState<string>('');
+  const [repoUser, setRepoUser] = useState<string>('');
+  const [blacklistUser, setBlacklistUser] = useState<Array<string>>([]);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [readyShowReviewers, setReadyShowReviewers] = useState<boolean>(false);
+  const [reviewer, setReviewer] = useState<IContributor | null>(null);
+  const user: IDataUser = {
+    login: loginUser,
     setLogin: setLoginUser,
-    repo:repoUser,
+    repo: repoUser,
     setRepo: setRepoUser,
     blacklist: blacklistUser,
-    setBlacklist:setBlacklistUser
-  }
+    setBlacklist: setBlacklistUser
+  };
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-
-  useEffect(()=>
-  {
-    setDataContextFromLocalStorage(user,'userdata');
+  useEffect(() => {
+    setDataContextFromLocalStorage(user, 'userdata');
     setLoading(false);
-  },[])
+  }, []);
   return (
-      <Context.Provider
-      value={
-        user
-      }>
-        {isLoading
-        ?
+    <Context.Provider value={user}>
+      {isLoading ? (
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
-        :
+      ) : (
         <div className="App">
-        <MyButton 
-        title='Show settings'
-        callback={handleShow}
-        />
-        <MyPopup
-        show={show}
-        handleClose={handleClose}
-        />
-        <br/>
-        <MyButton
-        title=' Searching reviewer...'
-        callback={()=>
-        {
-          setReviewer(null);
-          setLoading(true);
-          showAndChooseReviewer(
-            user,
-            generateReviewer,
-            setReadyShowReviewers,
-            setReviewer,
-            setLoading,
-          )
-        }}
-        />
-        <br/>
+          <MyButton title="Show settings" callback={handleShow} />
+          <MyPopup show={show} handleClose={handleClose} />
+          <br />
+          <MyButton
+            title=" Searching reviewer..."
+            callback={() => {
+              setReviewer(null);
+              setLoading(true);
+              showAndChooseReviewer(
+                user,
+                generateReviewer,
+                setReadyShowReviewers,
+                setReviewer,
+                setLoading
+              );
+            }}
+          />
+          <br />
         </div>
-        }
-        <br/>
-        {readyShowReviewers ? <img ref={generateReviewer} alt='iterationImgs'/> : null}
-        {reviewer 
-          ? 
-            <div>
-              <h1>You: {user.login}</h1>
-              <h1>Reviewer: {reviewer.login}</h1>
-                <img src={reviewer.avatar_url} alt='reviwerImg'/>
-            </div>
-          :
-          null  
-        }
-
-        
-      </Context.Provider>
+      )}
+      <br />
+      {readyShowReviewers ? <img ref={generateReviewer} alt="iterationImgs" /> : null}
+      {reviewer ? (
+        <div>
+          <h1>You: {user.login}</h1>
+          <h1>Reviewer: {reviewer.login}</h1>
+          <img src={reviewer.avatar_url} alt="reviwerImg" />
+        </div>
+      ) : null}
+    </Context.Provider>
   );
 }
 
