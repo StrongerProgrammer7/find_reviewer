@@ -2,8 +2,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { FC } from 'react'
 import { Button } from 'react-bootstrap'
-import { IWorkModal } from '../../../store/interfaces/IWorkModal';
-const MyButton:FC<{title:string,modal:IWorkModal}> = ({title,modal}:{title:string,modal:IWorkModal}) => 
+
+const MyButton:FC<{title:string,callback?:()=>void}> = ({title,callback}:{title:string,callback?:()=>void}) => 
 {
     return (
         <>
@@ -11,8 +11,8 @@ const MyButton:FC<{title:string,modal:IWorkModal}> = ({title,modal}:{title:strin
             className='mt-5'
             onClick={e=>
             {
-                if(modal.handleShow)
-                    modal.handleShow();
+                if(callback)
+                    callback();
             }}
             > {title} 
             </Button>
