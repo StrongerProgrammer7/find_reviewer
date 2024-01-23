@@ -1,23 +1,25 @@
 import { Octokit } from "octokit";
-import { Dispatch, SetStateAction } from "react";
+import { SetStateAction } from "react";
+import { Dispatch } from "redux";
+import { Controls } from "../models/user";
+import { IAction } from "../store/interfaces/IAction";
 import { IContributor, IDataUser, IUser } from "../store/interfaces/IDataUser";
 import { GITHUB_CLASSIS_TOKEN } from "./const";
 
 export const getLocalStorageItem = (key:string):string | undefined =>
 {
-    if(window.localStorage && window.localStorage.getItem(key))
+    if(!window.localStorage || !window.localStorage.getItem(key)) return;
+    
+    try 
     {
-        
-        try 
-        {
-            const elem:string = window.localStorage.getItem(key) || '';
-            return elem; 
-        } catch (error) 
-        {
-            console.log("Error with get data from localstorage");
-            console.error(error);
-        }
+        const elem:string = window.localStorage.getItem(key) || '';
+        return elem; 
+    } catch (error) 
+    {
+        console.log("Error with get data from localstorage");
+        console.error(error);
     }
+    
 }
 
 export const setLocalStorageItem =(key:string,value:string):void =>
@@ -33,17 +35,15 @@ export const setLocalStorageItem =(key:string,value:string):void =>
     }
 }
 
-export const setDataContextFromLocalStorage = (user:IDataUser,key:string):void =>
+export const setDataFromLocalStorage = (dispatch:Dispatch<IAction>,key:string):void =>
 {
     const elem:string | undefined = getLocalStorageItem(key);
     if(!elem) return;
     const arr = elem.split(';');
-
-    user.setLogin(arr[0]);
-    user.setRepo(arr[1]);
     const blackList = arr[2].split(',');
-    user.setBlacklist(blackList);
-    
+    dispatch(Controls.changeLogin(arr[0]) as IAction);
+    dispatch(Controls.changeRepo(arr[1])  as IAction);
+    dispatch(Controls.changeBlackList(blackList)  as IAction);    
 }
 
 const octokit = new Octokit(
@@ -106,11 +106,11 @@ const octokit = new Octokit(
 
 
   export const showAndChooseReviewer = async (
-    user:IDataUser,
+    user:IUser,
     generateReviewer: React.RefObject<HTMLImageElement>,
-    setReadyShowReviewers:Dispatch<SetStateAction<boolean>>,
-    setReviewer:Dispatch<SetStateAction<IContributor | null>>,
-    setLoading: Dispatch<SetStateAction<boolean>>,
+    setReadyShowReviewers:React.Dispatch<SetStateAction<boolean>>,
+    setReviewer:React.Dispatch<SetStateAction<IContributor | null>>,
+    setLoading: React.Dispatch<SetStateAction<boolean>>,
     maxIterations:number = 10,
     timeSlideShowImg:number = 200,
     timeUpIterationSlideShow:number=500

@@ -3,16 +3,16 @@ import React, { FC,useState,useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Spinner } from 'react-bootstrap';
 import { IWorkModal } from '../../../store/interfaces/IWorkModal';
-import { IDataUser } from '../../../store/interfaces/IDataUser';
-import useGetComplexObject from '../../../hooks/customHooks/useGetComplexObject';
+import { IUser } from '../../../store/interfaces/IDataUser';
 import { MyInput } from '../Inputs/MyInput';
 import { saveChanges, fillInputs } from './utils';
-
-
+import { useSelector, useDispatch } from "react-redux";
 
 const MyPopup:FC<IWorkModal> = ({ show, handleClose}: IWorkModal) => 
 {
-    const user:IDataUser = useGetComplexObject();
+    const user = useSelector((state:IUser)=>state);
+    const dispatch = useDispatch();
+
     const [loginInput,setLoginInput] = useState<string>('');
     const [repoInput,setRepoInput] = useState<string>('');
     const [blacklistInput,setBlacklistInput] = useState<string>('');
@@ -22,6 +22,7 @@ const MyPopup:FC<IWorkModal> = ({ show, handleClose}: IWorkModal) =>
         fillInputs(user,{loginInput,repoInput,blacklistInput,setLoginInput,setRepoInput,setBlacklistInput});
         
     },[]);
+
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -57,16 +58,16 @@ const MyPopup:FC<IWorkModal> = ({ show, handleClose}: IWorkModal) =>
             {isReadInputData ?
                 <Spinner animation="border" role="status">
                     <span className="visually-hidden">Loading...</span>
-              </Spinner>
-              :
-              <Button variant="primary" onClick={()=> 
-                saveChanges(user,
-                {
-                    loginInput,
-                    repoInput,
-                    blacklistInput
-                },
-                handleClose)}>Save Changes
+                </Spinner>
+                :
+                <Button variant="primary" onClick={()=> 
+                    saveChanges(dispatch,
+                    {
+                        loginInput,
+                        repoInput,
+                        blacklistInput
+                    },
+                    handleClose)}>Save Changes
                 </Button>
             }  
             </Modal.Footer>

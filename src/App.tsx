@@ -3,22 +3,12 @@ import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
 import MyPopup from './components/UI/Popup/MyPopup';
 import { IContributor, IDataUser } from './store/interfaces/IDataUser';
-import { setDataContextFromLocalStorage, showAndChooseReviewer } from './utils/helper';
+import { setDataFromLocalStorage, showAndChooseReviewer } from './utils/helper';
 import { Spinner } from 'react-bootstrap';
-
+import { useSelector, useDispatch } from "react-redux";
+import { IUser } from './store/interfaces/IDataUser';
 /*
-Функционал:
-- кнопка настроек, по клику на нее можно переключать видимость настроек.
-- в настройках 3 поля:
-
-    1. login для ввода логина текущего юзера
-    2. repo для указания репозитория для которого ищем ревьюера
-    3. blacklist для указания списка login-ов, кто не должен быть ревьюером
-- состояние настроек сохранять в localStorage
-- для генерации ревьюера нужна кнопка поиска ревьюера, по клику на которую должен быть выбран рандомный ревьюер из списка контрибьютеров репзитория указанный в пункте 2 настроек, учитывая blacklist пункта 3.
-- при генерации ревьюера показываем текущего пользователя и перебираемые вами пользователи для ревью.
-
-Дока по API https://docs.github.com/en/rest.
+Analog React: Added Redux
 Test:
 hhru
 eslint-config-hh
@@ -27,26 +17,15 @@ ipetropolsky,prizemlenie,Maxim-Do
 
 export const Context = createContext<IDataUser | null>(null);
 
-
-
 function App() 
 {
+  const user = useSelector((state:IUser) => state);
+  const dispath = useDispatch();
   const generateReviewer = useRef<null | HTMLImageElement>(null);
-  const [loginUser,setLoginUser] = useState<string>('');
-  const [repoUser,setRepoUser] = useState<string>('');
-  const [blacklistUser,setBlacklistUser] = useState<Array<string>>([]);
   const [isLoading,setLoading] = useState<boolean>(true);
   const [readyShowReviewers,setReadyShowReviewers] = useState<boolean>(false);
   const [reviewer,setReviewer] = useState<IContributor | null>(null);
-  const user:IDataUser = 
-  {
-    login:loginUser,
-    setLogin: setLoginUser,
-    repo:repoUser,
-    setRepo: setRepoUser,
-    blacklist: blacklistUser,
-    setBlacklist:setBlacklistUser
-  }
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -55,14 +34,11 @@ function App()
 
   useEffect(()=>
   {
-    setDataContextFromLocalStorage(user,'userdata');
+    setDataFromLocalStorage(dispath,'userdata');
     setLoading(false);
   },[])
   return (
-      <Context.Provider
-      value={
-        user
-      }>
+        <>
         {isLoading
         ?
         <Spinner animation="border" role="status">
@@ -109,9 +85,7 @@ function App()
           :
           null  
         }
-
-        
-      </Context.Provider>
+      </>
   );
 }
 
