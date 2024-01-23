@@ -51,6 +51,23 @@ const octokit = new Octokit(
       auth: GITHUB_CLASSIS_TOKEN
     }
   )
+
+  const getDataFromGithubAPI = async (login:string,repo:string,whatGet='contributors') =>
+  {
+    try
+    {
+      const result = octokit.request(`GET /repos/{owner}/{repo}/${whatGet}`, 
+      {
+          owner: login,
+          repo: repo,
+      });
+      return result;
+    }
+    catch(error:any)
+    {
+      console.log(`Error! Status: ${error?.status}. Message: ${error?.response?.data?.message}`);
+    }
+  }
   const isContributorToBlacklist = (contributor:string,blacklist:Array<string>) =>
   {
     for(let i = 0;i <blacklist.length;i++)
@@ -68,28 +85,18 @@ const octokit = new Octokit(
 
   export const getListContributors = async (user:IUser):Promise<Array<IContributor>> =>
   {
-    try 
+    const result = await getDataFromGithubAPI(user.login,user.repo); 
+    if(!result) return [];
+    console.log(result);
+    const contributors:Array<IContributor> = result.data
+    .map((contributor:IContributor) =>
     {
-      const result = await octokit.request("GET /repos/{owner}/{repo}/contributors", 
-      {
-          owner: user.login,
-          repo: user.repo,
-      });
-  
-      const contributors:Array<IContributor> = result.data
-      .map((contributor) =>
-      {
-        if(!contributor.login ) return null;
-        if(isContributorToBlacklist(contributor.login,user.blacklist))
-          return {avatar_url: contributor.avatar_url, login: contributor.login} as IContributor;
-        return null;
-      }).filter((contributor) => contributor !== null) as IContributor[]
-      return contributors;
-    } catch (error:any) 
-    {
-      console.log(`Error! Status: ${error?.status}. Message: ${error?.response?.data?.message}`);
-      return [];
-    }
+      if(!contributor.login ) return null;
+      if(isContributorToBlacklist(contributor.login,user.blacklist))
+        return {avatar_url: contributor.avatar_url, login: contributor.login} as IContributor;
+      return null;
+    }).filter((contributor:IContributor) => contributor !== null) as IContributor[]
+    return contributors;
   }
 
     function displayNextImage(generateReviewer: React.RefObject<HTMLImageElement>, contributors: Array<IContributor>, index:number): number
