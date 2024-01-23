@@ -15,7 +15,6 @@ eslint-config-hh
 ipetropolsky,prizemlenie,Maxim-Do
 */
 
-export const Context = createContext<IDataUser | null>(null);
 
 function App() {
   const user = useSelector((state: IUser) => state);
