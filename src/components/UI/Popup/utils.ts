@@ -20,20 +20,3 @@ export const saveChanges = (
   );
   if (handleClose) handleClose();
 };
-
-export const fillInputs = (user: IDataUser, data: ISetInputs) => {
-  if (user.blacklist.length !== 0) {
-    let blacklistText = '';
-    for (let i = 0; i < user.blacklist.length; i++)
-      if (i + 1 !== user.blacklist.length) blacklistText += user.blacklist[i] + ',';
-      else blacklistText += user.blacklist[i];
-
-    data.setBlacklistInput(blacklistText);
-  }
-  if (user.login !== '') {
-    data.setLoginInput(user.login);
-  }
-  if (user.repo !== '') {
-    data.setRepoInput(user.repo);
-  }
-};

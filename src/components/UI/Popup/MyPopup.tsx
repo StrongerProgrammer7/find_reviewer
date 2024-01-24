@@ -5,24 +5,15 @@ import { IWorkModal } from '../../../store/interfaces/IWorkModal';
 import { IDataUser } from '../../../store/interfaces/IDataUser';
 import useGetComplexObject from '../../../hooks/customHooks/useGetComplexObject';
 import { MyInput } from '../Inputs/MyInput';
-import { saveChanges, fillInputs } from './utils';
+import { saveChanges } from './utils';
 
 const MyPopup: FC<IWorkModal> = ({ show, handleClose }: IWorkModal) => {
   const user: IDataUser = useGetComplexObject();
-  const [loginInput, setLoginInput] = useState<string>('');
-  const [repoInput, setRepoInput] = useState<string>('');
-  const [blacklistInput, setBlacklistInput] = useState<string>('');
+  const [loginInput, setLoginInput] = useState<string>(user.login ?? '');
+  const [repoInput, setRepoInput] = useState<string>(user.repo ?? '');
+  const [blacklistInput, setBlacklistInput] = useState<string>(user.blacklist.toString() ?? '');
   const [isReadInputData, setReadInputData] = useState(false);
-  useEffect(() => {
-    fillInputs(user, {
-      loginInput,
-      repoInput,
-      blacklistInput,
-      setLoginInput,
-      setRepoInput,
-      setBlacklistInput
-    });
-  }, []);
+  
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
