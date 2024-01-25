@@ -1,10 +1,11 @@
-import React, { useState, createContext, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
 import MyPopup from './components/UI/Popup/MyPopup';
 import { IContributor, IDataUser } from './store/interfaces/IDataUser';
 import { setDataContextFromLocalStorage, showAndChooseReviewer } from './utils/helper';
 import { Spinner } from 'react-bootstrap';
+import useGetComplexObject from './hooks/customHooks/useGetComplexObject';
 
 /*
 Функционал:
@@ -25,24 +26,15 @@ eslint-config-hh
 ipetropolsky,prizemlenie,Maxim-Do
 */
 
-export const Context = createContext<IDataUser | null>(null);
+
 
 function App() {
+  const user: IDataUser = useGetComplexObject();
   const generateReviewer = useRef<null | HTMLImageElement>(null);
-  const [loginUser, setLoginUser] = useState<string>('');
-  const [repoUser, setRepoUser] = useState<string>('');
-  const [blacklistUser, setBlacklistUser] = useState<Array<string>>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [readyShowReviewers, setReadyShowReviewers] = useState<boolean>(false);
   const [reviewer, setReviewer] = useState<IContributor | null>(null);
-  const user: IDataUser = {
-    login: loginUser,
-    setLogin: setLoginUser,
-    repo: repoUser,
-    setRepo: setRepoUser,
-    blacklist: blacklistUser,
-    setBlacklist: setBlacklistUser
-  };
+  
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -53,7 +45,7 @@ function App() {
     setLoading(false);
   }, []);
   return (
-    <Context.Provider value={user}>
+    <>
       {isLoading ? (
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
@@ -89,7 +81,7 @@ function App() {
           <img src={reviewer.avatar_url} alt="reviwerImg" />
         </div>
       ) : null}
-    </Context.Provider>
+    </>
   );
 }
 
