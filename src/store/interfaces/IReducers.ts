@@ -1,8 +1,7 @@
-import { IUser } from "./IDataUser";
-import { IReviewer } from "./IDataUser";
+import { IContributor, IUser } from "./IDataUser";
 import { ILoadings } from "./ILoadings";
 export interface RootState {
     userReducer: IUser;
-    reviewerReducer: IReviewer;
+    reviewerReducer: IContributor;
     loadingsReducer: ILoadings
 } 

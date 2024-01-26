@@ -15,8 +15,3 @@ export interface IContributor {
   avatar_url: string;
   login: string;
 }
-
-export interface IReviewer {
-  login:string,
-  avatar_url:string
-}

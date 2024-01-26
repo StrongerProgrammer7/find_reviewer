@@ -15,6 +15,7 @@ eslint-config-hh
 ipetropolsky,prizemlenie,Maxim-Do
 */
 
+//Аргумент типа "() => Promise<void>" нельзя назначить параметру типа "UnknownAction".
 
 function App() 
 {

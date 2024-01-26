@@ -2,7 +2,7 @@ import { ActionTypes } from '../../enums/ActionTypes';
 
 interface IActionReviewerLogin {
     type: ActionTypes.REVIEWER;
-    payload: Array<string>;
+    payload: string;
   }
   
   interface IActionAvatar {

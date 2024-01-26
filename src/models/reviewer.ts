@@ -1,8 +1,8 @@
 import { ActionTypes } from '../store/enums/ActionTypes';
 import { IActionReviewer } from '../store/interfaces/Action/IActionReviewer';
-import { IReviewer } from '../store/interfaces/IDataUser';
+import { IContributor } from '../store/interfaces/IDataUser';
 
-const initialState: IReviewer = {
+const initialState: IContributor = {
   login: '',
   avatar_url:'',
 };

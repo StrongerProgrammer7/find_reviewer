@@ -1,5 +1,4 @@
 import { Octokit } from 'octokit';
-import { SetStateAction } from 'react';
 import { Dispatch } from 'redux';
 import { loadingsControls } from '../models/loading';
 import { reviewerControls } from '../models/reviewer';
