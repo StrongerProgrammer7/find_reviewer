@@ -1,11 +1,11 @@
-import React, { useState, createContext, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
 import MyPopup from './components/UI/Popup/MyPopup';
-import { IUser,IContributor } from './store/interfaces/IDataUser';
 import { setDataFromLocalStorage, showAndChooseReviewer } from './utils/helper';
 import { Spinner } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from './store/interfaces/IReducers';
 /*
 Analog React: Added Redux
 Test:
@@ -17,12 +17,13 @@ ipetropolsky,prizemlenie,Maxim-Do
 
 function App() 
 {
-  const user = useSelector((state: IUser) => state);
+  const user = useSelector((state: RootState) => state.userReducer);
+  const reviewer = useSelector((state:RootState)=>state.reviewerReducer);
+
   const dispath = useDispatch();
   const generateReviewer = useRef<null | HTMLImageElement>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [readyShowReviewers, setReadyShowReviewers] = useState<boolean>(false);
-  const [reviewer, setReviewer] = useState<IContributor | null>(null);
 
   const [show, setShow] = useState(false);
 
@@ -47,13 +48,12 @@ function App()
           <MyButton
             title=" Searching reviewer..."
             callback={() => {
-              setReviewer(null);
               setLoading(true);
               showAndChooseReviewer(
                 user,
                 generateReviewer,
                 setReadyShowReviewers,
-                setReviewer,
+                dispath,
                 setLoading
               );
             }}
@@ -63,7 +63,7 @@ function App()
       )}
       <br />
       {readyShowReviewers ? <img ref={generateReviewer} alt="iterationImgs" /> : null}
-      {reviewer ? (
+      {reviewer.login !== '' ? (
         <div>
           <h1>You: {user.login}</h1>
           <h1>Reviewer: {reviewer.login}</h1>

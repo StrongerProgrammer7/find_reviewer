@@ -1,4 +1,3 @@
 import { createStore } from 'redux';
-import { userReducer } from '../models/user';
-
-export const store = createStore(userReducer);
+import combine from "./combineReducer";
+export const store = createStore(combine);

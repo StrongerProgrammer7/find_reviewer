@@ -14,5 +14,15 @@ interface IActionBlackList {
   type: ActionTypes.BLACKLIST;
   payload: Array<string>;
 }
+interface IActionReviewerLogin {
+  type: ActionTypes.REVIEWER;
+  payload: Array<string>;
+}
 
+interface IActionAvatar {
+  type: ActionTypes.AVATAR;
+  payload: string;
+}
 export type IAction = IActionLogin | IActionREPO | IActionBlackList;
+export type IActionReviewer = IActionReviewerLogin | IActionAvatar;
+

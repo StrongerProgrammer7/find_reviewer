@@ -1,76 +1,76 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC,useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button, Spinner } from 'react-bootstrap';
+import { Modal, Button, Spinner, Form } from 'react-bootstrap';
 import { IWorkModal } from '../../../store/interfaces/IWorkModal';
-import { IUser } from '../../../store/interfaces/IDataUser';
-import { MyInput } from '../Inputs/MyInput';
 import { saveChanges } from './utils';
 import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../store/interfaces/IReducers';
+import { StandartInput } from '../Inputs/StandartInput';
 
 const MyPopup: FC<IWorkModal> = ({ show, handleClose }: IWorkModal) => {
-  const user = useSelector((state: IUser) => state);
+  const user = useSelector((state: RootState) => state.userReducer);
   const dispatch = useDispatch();
 
-  const [loginInput, setLoginInput] = useState<string>(user.login ?? '');
-  const [repoInput, setRepoInput] = useState<string>(user.repo ?? '');
-  const [blacklistInput, setBlacklistInput] = useState<string>(user.blacklist.toString() ?? '');
-  const [isReadInputData, setReadInputData] = useState(false);
+  const loginInput = useRef<HTMLInputElement | null>(null);
+  const repoInput = useRef<HTMLInputElement | null>(null);
+  const blacklistInput = useRef<HTMLInputElement | null>(null);
 
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Settings</Modal.Title>
       </Modal.Header>
+      <Form
+      onSubmit={(e)=>
+      {
+        e.preventDefault();
+        if(!loginInput || !repoInput || !blacklistInput) return;
+        if(!loginInput.current || !repoInput.current || !blacklistInput.current) return;
+
+        saveChanges(
+          dispatch,
+          {
+            loginInput:loginInput.current.value,
+            repoInput:repoInput.current.value,
+            blacklistInput:blacklistInput.current.value
+          },
+          handleClose
+        )
+      }}>
       <Modal.Body>
-        <MyInput
-          titleLabel="Your login"
-          placeholder="login"
-          _defaultValue={loginInput}
-          setState={setLoginInput}
-          setStateLoading={setReadInputData}
+        <StandartInput 
+        titleLabel="Your login"
+        placeholder="login"
+        _defaultValue={user.login}
+        _ref={loginInput}
         />
-        <MyInput
-          titleLabel="Your repo"
-          placeholder="repo"
-          _defaultValue={repoInput}
-          setState={setRepoInput}
-          setStateLoading={setReadInputData}
+        <StandartInput 
+        titleLabel="Your repo"
+        placeholder="repo"
+        _defaultValue={user.repo}
+        _ref={repoInput}
         />
-        <MyInput
-          titleLabel="Blacklist"
-          placeholder="using ,"
-          _defaultValue={blacklistInput}
-          setState={setBlacklistInput}
-          setStateLoading={setReadInputData}
+        <StandartInput 
+        titleLabel="Blacklist"
+        placeholder="using ,"
+        _defaultValue={user.blacklist.toString()}
+        _ref={blacklistInput}
         />
+        
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        {isReadInputData ? (
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        ) : (
-          <Button
+        <Button
             variant="primary"
-            onClick={() =>
-              saveChanges(
-                dispatch,
-                {
-                  loginInput,
-                  repoInput,
-                  blacklistInput
-                },
-                handleClose
-              )
-            }
+            type="submit"
           >
             Save Changes
           </Button>
-        )}
       </Modal.Footer>
+
+      </Form>
     </Modal>
   );
 };

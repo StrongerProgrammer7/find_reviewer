@@ -1,9 +1,10 @@
 import { Octokit } from 'octokit';
 import { SetStateAction } from 'react';
 import { Dispatch } from 'redux';
-import { Controls } from '../models/user';
-import { IAction } from '../store/interfaces/IAction';
-import { IContributor, IDataUser, IUser } from '../store/interfaces/IDataUser';
+import { reviewerControls } from '../models/reviewer';
+import { UserControls } from '../models/user';
+import { IAction, IActionReviewer } from '../store/interfaces/IAction';
+import { IContributor, IUser } from '../store/interfaces/IDataUser';
 import { GITHUB_CLASSIS_TOKEN } from './const';
 
 export const getLocalStorageItem = (key: string): string | undefined => {
@@ -32,11 +33,14 @@ export const setDataFromLocalStorage = (dispatch: Dispatch<IAction>, key: string
   if (!elem) return;
   const arr = elem.split(';');
   const blackList = arr[2].split(',');
-  dispatch(Controls.changeLogin(arr[0]) as IAction);
-  dispatch(Controls.changeRepo(arr[1]) as IAction);
-  dispatch(Controls.changeBlackList(blackList) as IAction);
+  dispatch(UserControls.changeLogin(arr[0]) as IAction);
+  dispatch(UserControls.changeRepo(arr[1]) as IAction);
+  dispatch(UserControls.changeBlackList(blackList) as IAction);
 };
 
+export const setInputsModal = (dispatch:Dispatch<IActionReviewer>, user:IUser):void => {
+  
+}
 const octokit = new Octokit({
   auth: GITHUB_CLASSIS_TOKEN
 });
@@ -91,11 +95,17 @@ function stopInterval(interval: NodeJS.Timer) {
   clearInterval(interval);
 }
 
+function setReviewer(dispatch:Dispatch<IActionReviewer>,contributor:IContributor)
+{
+  dispatch(reviewerControls.changeAvatarReviewer(contributor.avatar_url) as IActionReviewer);
+  dispatch(reviewerControls.changeLoginReviewer(contributor.login) as IActionReviewer);
+}
+
 export const showAndChooseReviewer = async (
   user: IUser,
   generateReviewer: React.RefObject<HTMLImageElement>,
   setReadyShowReviewers: React.Dispatch<SetStateAction<boolean>>,
-  setReviewer: React.Dispatch<SetStateAction<IContributor | null>>,
+  dispatch:Dispatch<IActionReviewer>,
   setLoading: React.Dispatch<SetStateAction<boolean>>,
   maxIterations: number = 10,
   timeSlideShowImg: number = 200,
@@ -103,10 +113,11 @@ export const showAndChooseReviewer = async (
 ) => {
   const contributors: Array<IContributor> = await getListContributors(user);
   if (contributors.length === 0) {
-    setReviewer({ login: 'Not exists reviewers', avatar_url: '' });
+    setReviewer(dispatch,{login:'Not find reviewer so as not exists',avatar_url:''});
     return;
   }
   console.log(contributors);
+  //dispatch(UserControls.changeLogin(arr[0]) as IAction);
   setReadyShowReviewers(true);
   let currentIndex: number = 0;
 
@@ -122,7 +133,7 @@ export const showAndChooseReviewer = async (
       stopInterval(slideshowInterval);
       setReadyShowReviewers(false);
       setLoading(false);
-      setReviewer(contributors[currentIndex]);
+      setReviewer(dispatch,contributors[currentIndex]);
       stopInterval(iteration);
     }
   }, timeUpIterationSlideShow);

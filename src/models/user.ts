@@ -28,7 +28,7 @@ export function userReducer(state = initialState, action: IAction) {
   }
 }
 
-export const Controls = {
+export const UserControls = {
   changeLogin: (value: string) => ({
     type: ActionTypes.LOGIN,
     payload: value
