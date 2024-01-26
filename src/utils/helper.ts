@@ -1,9 +1,12 @@
 import { Octokit } from 'octokit';
 import { SetStateAction } from 'react';
 import { Dispatch } from 'redux';
+import { loadingsControls } from '../models/loading';
 import { reviewerControls } from '../models/reviewer';
 import { UserControls } from '../models/user';
-import { IAction, IActionReviewer } from '../store/interfaces/IAction';
+import { IAction } from '../store/interfaces/Action/IAction';
+import { IActionReviewer } from '../store/interfaces/Action/IActionReviewer';
+import { IActionLoadings } from '../store/interfaces/Action/IActionLoadings';
 import { IContributor, IUser } from '../store/interfaces/IDataUser';
 import { GITHUB_CLASSIS_TOKEN } from './const';
 
@@ -38,9 +41,7 @@ export const setDataFromLocalStorage = (dispatch: Dispatch<IAction>, key: string
   dispatch(UserControls.changeBlackList(blackList) as IAction);
 };
 
-export const setInputsModal = (dispatch:Dispatch<IActionReviewer>, user:IUser):void => {
-  
-}
+
 const octokit = new Octokit({
   auth: GITHUB_CLASSIS_TOKEN
 });
@@ -104,21 +105,20 @@ function setReviewer(dispatch:Dispatch<IActionReviewer>,contributor:IContributor
 export const showAndChooseReviewer = async (
   user: IUser,
   generateReviewer: React.RefObject<HTMLImageElement>,
-  setReadyShowReviewers: React.Dispatch<SetStateAction<boolean>>,
-  dispatch:Dispatch<IActionReviewer>,
-  setLoading: React.Dispatch<SetStateAction<boolean>>,
+  dispatch:Dispatch<IActionReviewer | IActionLoadings>,
   maxIterations: number = 10,
   timeSlideShowImg: number = 200,
   timeUpIterationSlideShow: number = 500
 ) => {
+  dispatch(loadingsControls.changeBaseLoad(true) as IActionLoadings);
   const contributors: Array<IContributor> = await getListContributors(user);
   if (contributors.length === 0) {
     setReviewer(dispatch,{login:'Not find reviewer so as not exists',avatar_url:''});
     return;
   }
   console.log(contributors);
-  //dispatch(UserControls.changeLogin(arr[0]) as IAction);
-  setReadyShowReviewers(true);
+  dispatch(loadingsControls.changeLoadShowReviewer(true) as IActionLoadings);
+
   let currentIndex: number = 0;
 
   const slideshowInterval = setInterval(() => {
@@ -131,10 +131,21 @@ export const showAndChooseReviewer = async (
     currentIteration++;
     if (currentIteration >= maxIterations) {
       stopInterval(slideshowInterval);
-      setReadyShowReviewers(false);
-      setLoading(false);
+      dispatch(loadingsControls.changeLoadShowReviewer(false) as IActionLoadings);
+      dispatch(loadingsControls.changeBaseLoad(false) as IActionLoadings);
       setReviewer(dispatch,contributors[currentIndex]);
       stopInterval(iteration);
     }
   }, timeUpIterationSlideShow);
 };
+/*
+export const asyncIncrement = () => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 5000);
+  });
+  dispatch(increment());
+  dispatch(setLoading(false));
+};*/

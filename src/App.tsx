@@ -6,6 +6,7 @@ import { setDataFromLocalStorage, showAndChooseReviewer } from './utils/helper';
 import { Spinner } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './store/interfaces/IReducers';
+import { loadingsControls } from './models/loading';
 /*
 Analog React: Added Redux
 Test:
@@ -19,11 +20,9 @@ function App()
 {
   const user = useSelector((state: RootState) => state.userReducer);
   const reviewer = useSelector((state:RootState)=>state.reviewerReducer);
-
+  const loadings = useSelector((state:RootState)=> state.loadingsReducer);
   const dispath = useDispatch();
   const generateReviewer = useRef<null | HTMLImageElement>(null);
-  const [isLoading, setLoading] = useState<boolean>(true);
-  const [readyShowReviewers, setReadyShowReviewers] = useState<boolean>(false);
 
   const [show, setShow] = useState(false);
 
@@ -32,11 +31,11 @@ function App()
 
   useEffect(() => {
     setDataFromLocalStorage(dispath, 'userdata');
-    setLoading(false);
+    dispath(loadingsControls.changeBaseLoad(false));
   }, []);
   return (
     <>
-      {isLoading ? (
+      {loadings.baseLoad === true ? (
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
@@ -48,13 +47,10 @@ function App()
           <MyButton
             title=" Searching reviewer..."
             callback={() => {
-              setLoading(true);
               showAndChooseReviewer(
                 user,
                 generateReviewer,
-                setReadyShowReviewers,
-                dispath,
-                setLoading
+                dispath
               );
             }}
           />
@@ -62,7 +58,7 @@ function App()
         </div>
       )}
       <br />
-      {readyShowReviewers ? <img ref={generateReviewer} alt="iterationImgs" /> : null}
+      {loadings.loadReadyShowReviewer ? <img ref={generateReviewer} alt="iterationImgs" /> : null}
       {reviewer.login !== '' ? (
         <div>
           <h1>You: {user.login}</h1>

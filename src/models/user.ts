@@ -1,5 +1,5 @@
 import { ActionTypes } from '../store/enums/ActionTypes';
-import { IAction } from '../store/interfaces/IAction';
+import { IAction } from '../store/interfaces/Action/IAction';
 import { IUser } from '../store/interfaces/IDataUser';
 
 const initialState: IUser = {

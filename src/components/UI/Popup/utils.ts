@@ -1,7 +1,7 @@
 import { setLocalStorageItem } from '../../../utils/helper';
 import { IInputs, ISetInputs } from '../../../store/interfaces/IInputs';
 import {  UserControls } from '../../../models/user';
-import { IAction } from '../../../store/interfaces/IAction';
+import { IAction } from '../../../store/interfaces/Action/IAction';
 import { Dispatch } from 'redux';
 const dataFromStringToArray = (data: string, separator: string = ',') => {
   return data.split(separator);
