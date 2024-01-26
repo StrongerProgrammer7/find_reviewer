@@ -45,8 +45,7 @@ export const MyInput = ({
           placeholder={placeholder}
           defaultValue={_defaultValue}
           onChange={(e) => {
-            trimSpaces(e.target.value);
-            debounced(e.target.value);
+            debounced(trimSpaces(e.target.value));
           }}
         />
       </Form.Group>

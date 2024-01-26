@@ -5,18 +5,13 @@ import { Button } from 'react-bootstrap';
 const MyButton: FC<{ title: string; callback?: () => void }> = ({
   title,
   callback
-}: {
-  title: string;
-  callback?: () => void;
 }) => {
   return (
     <>
       <Button
         variant="primary"
         className="mt-5"
-        onClick={(e) => {
-          if (callback) callback();
-        }}
+        onClick={callback}
       >
         {' '}
         {title}

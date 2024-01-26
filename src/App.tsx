@@ -2,11 +2,10 @@ import React, { useState, createContext, useEffect, useRef } from 'react';
 import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
 import MyPopup from './components/UI/Popup/MyPopup';
-import { IContributor, IDataUser } from './store/interfaces/IDataUser';
+import { IUser,IContributor } from './store/interfaces/IDataUser';
 import { setDataFromLocalStorage, showAndChooseReviewer } from './utils/helper';
 import { Spinner } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { IUser } from './store/interfaces/IDataUser';
 /*
 Analog React: Added Redux
 Test:
@@ -16,7 +15,8 @@ ipetropolsky,prizemlenie,Maxim-Do
 */
 
 
-function App() {
+function App() 
+{
   const user = useSelector((state: IUser) => state);
   const dispath = useDispatch();
   const generateReviewer = useRef<null | HTMLImageElement>(null);
