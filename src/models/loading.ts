@@ -2,8 +2,8 @@ import { ActionTypes } from '../store/enums/ActionTypes';
 import IActionLoadings from '../store/interfaces/Action/IActionLoadings';
 import { ILoadings } from '../store/interfaces/ILoadings';
 const initialState: ILoadings = {
-    baseLoad:true,
-    loadReadyShowReviewer:false
+  baseLoad: true,
+  loadReadyShowReviewer: false
 };
 
 export function loadingsReducer(state = initialState, action: IActionLoadings) {
@@ -22,8 +22,8 @@ export const loadingsControls = {
     type: ActionTypes.BASELOADING,
     payload: value
   }),
-  changeLoadShowReviewer: (value:boolean) => ({
+  changeLoadShowReviewer: (value: boolean) => ({
     type: ActionTypes.LOADSHOWREVIEWER,
-    payload:value
+    payload: value
   })
 };

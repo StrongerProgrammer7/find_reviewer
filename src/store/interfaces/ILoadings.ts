@@ -1,4 +1,4 @@
-export interface ILoadings{
-    baseLoad?:boolean,
-    loadReadyShowReviewer?:boolean
+export interface ILoadings {
+  baseLoad?: boolean;
+  loadReadyShowReviewer?: boolean;
 }

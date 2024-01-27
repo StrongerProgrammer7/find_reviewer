@@ -1,18 +1,17 @@
-import React, { Dispatch, SetStateAction,Ref } from 'react';
+import React, { Dispatch, SetStateAction, Ref } from 'react';
 import { Form } from 'react-bootstrap';
-
 
 export const StandartInput = ({
   titleLabel,
   placeholder,
   _defaultValue,
   _ref,
-  type = 'text',
+  type = 'text'
 }: {
   titleLabel: string;
   placeholder: string;
   _defaultValue: string;
-  _ref:Ref<HTMLInputElement>;
+  _ref: Ref<HTMLInputElement>;
   type?: string;
 }) => {
   return (

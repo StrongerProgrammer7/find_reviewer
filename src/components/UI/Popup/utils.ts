@@ -1,6 +1,6 @@
 import { setLocalStorageItem } from '../../../utils/helper';
 import { IInputs } from '../../../store/interfaces/IInputs';
-import {  UserControls } from '../../../models/user';
+import { UserControls } from '../../../models/user';
 import IActionUser from '../../../store/interfaces/Action/IActionUser';
 import { Dispatch } from 'redux';
 const dataFromStringToArray = (data: string, separator: string = ',') => {
@@ -21,4 +21,3 @@ export const saveChanges = (
   );
   if (handleClose) handleClose();
 };
-

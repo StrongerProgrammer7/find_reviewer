@@ -1,10 +1,10 @@
 import { ActionTypes } from '../store/enums/ActionTypes';
-import  IActionReviewer from '../store/interfaces/Action/IActionReviewer';
+import IActionReviewer from '../store/interfaces/Action/IActionReviewer';
 import { IContributor } from '../store/interfaces/IDataUser';
 
 const initialState: IContributor = {
   login: '',
-  avatar_url:'',
+  avatar_url: ''
 };
 
 export function reviewerReducer(state = initialState, action: IActionReviewer) {
@@ -23,8 +23,8 @@ export const reviewerControls = {
     type: ActionTypes.REVIEWER,
     payload: value
   }),
-  changeAvatarReviewer: (value:string) => ({
-    type:ActionTypes.AVATAR,
-    payload:value
+  changeAvatarReviewer: (value: string) => ({
+    type: ActionTypes.AVATAR,
+    payload: value
   })
 };

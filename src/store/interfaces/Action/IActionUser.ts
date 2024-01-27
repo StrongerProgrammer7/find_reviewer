@@ -15,7 +15,6 @@ interface IActionBlackList {
   payload: Array<string>;
 }
 
-type  IActionUser = IActionLogin | IActionREPO | IActionBlackList;
+type IActionUser = IActionLogin | IActionREPO | IActionBlackList;
 
 export default IActionUser;
-
