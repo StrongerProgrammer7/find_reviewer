@@ -11,4 +11,5 @@ interface IActionBaseLoad {
     payload:boolean
   }
 
-  export type IActionLoadings = IActionBaseLoad | IActionLoadShowReviewer;
+  type IActionLoadings = IActionBaseLoad | IActionLoadShowReviewer;
+  export default IActionLoadings;

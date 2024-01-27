@@ -1,5 +1,5 @@
 import { ActionTypes } from '../store/enums/ActionTypes';
-import { IActionReviewer } from '../store/interfaces/Action/IActionReviewer';
+import  IActionReviewer from '../store/interfaces/Action/IActionReviewer';
 import { IContributor } from '../store/interfaces/IDataUser';
 
 const initialState: IContributor = {

@@ -1,6 +1,6 @@
 import React, { FC,useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button, Spinner, Form } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import { IWorkModal } from '../../../store/interfaces/IWorkModal';
 import { saveChanges } from './utils';
 import { useSelector, useDispatch } from 'react-redux';

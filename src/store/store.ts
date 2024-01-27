@@ -1,5 +1,7 @@
-import {  createStore } from 'redux';
+import {  applyMiddleware, legacy_createStore as createStore } from 'redux';
 import combine from "./combineReducer";
-import { asyncActionsMiddleware } from './middlewares/middleware';
 
-export const store = createStore(combine);
+import { loggerMiddleware,asyncActionsMiddleware } from './middlewares/middleware';
+
+
+export const store = createStore(combine,{},applyMiddleware(loggerMiddleware,asyncActionsMiddleware));

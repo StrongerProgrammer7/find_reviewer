@@ -1,5 +1,5 @@
 import { ActionTypes } from '../store/enums/ActionTypes';
-import { IActionLoadings } from '../store/interfaces/Action/IActionLoadings';
+import IActionLoadings from '../store/interfaces/Action/IActionLoadings';
 import { ILoadings } from '../store/interfaces/ILoadings';
 const initialState: ILoadings = {
     baseLoad:true,

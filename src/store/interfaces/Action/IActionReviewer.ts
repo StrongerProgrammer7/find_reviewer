@@ -10,4 +10,5 @@ interface IActionReviewerLogin {
     payload: string;
   }
 
-  export type IActionReviewer = IActionReviewerLogin | IActionAvatar;
+  type IActionReviewer = IActionReviewerLogin | IActionAvatar;
+  export default IActionReviewer;

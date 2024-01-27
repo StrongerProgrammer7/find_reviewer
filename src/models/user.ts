@@ -1,5 +1,5 @@
 import { ActionTypes } from '../store/enums/ActionTypes';
-import { IAction } from '../store/interfaces/Action/IAction';
+import IActionUser from '../store/interfaces/Action/IActionUser';
 import { IUser } from '../store/interfaces/IDataUser';
 
 const initialState: IUser = {
@@ -15,7 +15,7 @@ const initialState: IUser = {
   ]
 };
 
-export function userReducer(state = initialState, action: IAction) {
+export function userReducer(state = initialState, action: IActionUser) {
   switch (action.type) {
     case ActionTypes.LOGIN:
       return { ...state, login: action.payload };
