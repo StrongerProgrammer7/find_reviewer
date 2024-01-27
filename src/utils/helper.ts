@@ -3,11 +3,12 @@ import { Dispatch } from 'redux';
 import { loadingsControls } from '../models/loading';
 import { reviewerControls } from '../models/reviewer';
 import { UserControls } from '../models/user';
-import { IAction } from '../store/interfaces/Action/IAction';
-import { IActionReviewer } from '../store/interfaces/Action/IActionReviewer';
-import { IActionLoadings } from '../store/interfaces/Action/IActionLoadings';
+import IActionUser from '../store/interfaces/Action/IActionUser';
+import IActionReviewer from '../store/interfaces/Action/IActionReviewer';
+import IActionLoadings from '../store/interfaces/Action/IActionLoadings';
 import { IContributor, IUser } from '../store/interfaces/IDataUser';
 import { GITHUB_CLASSIS_TOKEN } from './const';
+import { RootState } from '../store/interfaces/IReducers';
 
 export const getLocalStorageItem = (key: string): string | undefined => {
   if (!window.localStorage || !window.localStorage.getItem(key)) return;
@@ -30,16 +31,15 @@ export const setLocalStorageItem = (key: string, value: string): void => {
   }
 };
 
-export const setDataFromLocalStorage = (dispatch: Dispatch<IAction>, key: string): void => {
+export const setDataFromLocalStorage = (dispatch: Dispatch<IActionUser>, key: string): void => {
   const elem: string | undefined = getLocalStorageItem(key);
   if (!elem) return;
   const arr = elem.split(';');
   const blackList = arr[2].split(',');
-  dispatch(UserControls.changeLogin(arr[0]) as IAction);
-  dispatch(UserControls.changeRepo(arr[1]) as IAction);
-  dispatch(UserControls.changeBlackList(blackList) as IAction);
+  dispatch(UserControls.changeLogin(arr[0]) as IActionUser);
+  dispatch(UserControls.changeRepo(arr[1]) as IActionUser);
+  dispatch(UserControls.changeBlackList(blackList) as IActionUser);
 };
-
 
 const octokit = new Octokit({
   auth: GITHUB_CLASSIS_TOKEN
@@ -95,56 +95,45 @@ function stopInterval(interval: NodeJS.Timer) {
   clearInterval(interval);
 }
 
-function setReviewer(dispatch:Dispatch<IActionReviewer>,contributor:IContributor)
-{
+function setReviewer(dispatch: Dispatch<IActionReviewer>, contributor: IContributor) {
   dispatch(reviewerControls.changeAvatarReviewer(contributor.avatar_url) as IActionReviewer);
   dispatch(reviewerControls.changeLoginReviewer(contributor.login) as IActionReviewer);
 }
 
-export const showAndChooseReviewer = async (
-  user: IUser,
-  generateReviewer: React.RefObject<HTMLImageElement>,
-  dispatch:Dispatch<IActionReviewer | IActionLoadings>,
-  maxIterations: number = 10,
-  timeSlideShowImg: number = 200,
-  timeUpIterationSlideShow: number = 500
-) => {
-  dispatch(loadingsControls.changeBaseLoad(true) as IActionLoadings);
-  const contributors: Array<IContributor> = await getListContributors(user);
-  if (contributors.length === 0) {
-    setReviewer(dispatch,{login:'Not find reviewer so as not exists',avatar_url:''});
-    return;
-  }
-  console.log(contributors);
-  dispatch(loadingsControls.changeLoadShowReviewer(true) as IActionLoadings);
-
-  let currentIndex: number = 0;
-
-  const slideshowInterval = setInterval(() => {
-    currentIndex = displayNextImage(generateReviewer, contributors, currentIndex);
-  }, timeSlideShowImg);
-
-  let currentIteration = 0;
-
-  const iteration = setInterval(() => {
-    currentIteration++;
-    if (currentIteration >= maxIterations) {
-      stopInterval(slideshowInterval);
-      dispatch(loadingsControls.changeLoadShowReviewer(false) as IActionLoadings);
-      dispatch(loadingsControls.changeBaseLoad(false) as IActionLoadings);
-      setReviewer(dispatch,contributors[currentIndex]);
-      stopInterval(iteration);
+export const showAndChooseReviewer =
+  (
+    user: IUser,
+    generateReviewer: React.RefObject<HTMLImageElement>,
+    maxIterations: number = 10,
+    timeSlideShowImg: number = 200,
+    timeUpIterationSlideShow: number = 500
+  ) =>
+  async (dispatch: Dispatch<IActionReviewer | IActionLoadings>, getState: () => RootState) => {
+    dispatch(loadingsControls.changeBaseLoad(true) as IActionLoadings);
+    const contributors: Array<IContributor> = await getListContributors(user);
+    if (contributors.length === 0) {
+      setReviewer(dispatch, { login: 'Not find reviewer so as not exists', avatar_url: '' });
+      return;
     }
-  }, timeUpIterationSlideShow);
-};
-/*
-export const asyncIncrement = () => async (dispatch, getState) => {
-  dispatch(setLoading(true));
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, 5000);
-  });
-  dispatch(increment());
-  dispatch(setLoading(false));
-};*/
+    console.log(contributors);
+    dispatch(loadingsControls.changeLoadShowReviewer(true) as IActionLoadings);
+
+    let currentIndex: number = 0;
+
+    const slideshowInterval = setInterval(() => {
+      currentIndex = displayNextImage(generateReviewer, contributors, currentIndex);
+    }, timeSlideShowImg);
+
+    let currentIteration = 0;
+
+    const iteration = setInterval(() => {
+      currentIteration++;
+      if (currentIteration >= maxIterations) {
+        stopInterval(slideshowInterval);
+        dispatch(loadingsControls.changeLoadShowReviewer(false) as IActionLoadings);
+        dispatch(loadingsControls.changeBaseLoad(false) as IActionLoadings);
+        setReviewer(dispatch, contributors[currentIndex]);
+        stopInterval(iteration);
+      }
+    }, timeUpIterationSlideShow);
+  };

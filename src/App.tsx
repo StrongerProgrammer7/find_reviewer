@@ -17,12 +17,11 @@ ipetropolsky,prizemlenie,Maxim-Do
 
 //Аргумент типа "() => Promise<void>" нельзя назначить параметру типа "UnknownAction".
 
-function App() 
-{
+function App() {
   const user = useSelector((state: RootState) => state.userReducer);
-  const reviewer = useSelector((state:RootState)=>state.reviewerReducer);
-  const loadings = useSelector((state:RootState)=> state.loadingsReducer);
-  const dispath = useDispatch();
+  const reviewer = useSelector((state: RootState) => state.reviewerReducer);
+  const loadings = useSelector((state: RootState) => state.loadingsReducer);
+  const dispatch = useDispatch();
   const generateReviewer = useRef<null | HTMLImageElement>(null);
 
   const [show, setShow] = useState(false);
@@ -31,8 +30,8 @@ function App()
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    setDataFromLocalStorage(dispath, 'userdata');
-    dispath(loadingsControls.changeBaseLoad(false));
+    setDataFromLocalStorage(dispatch, 'userdata');
+    dispatch(loadingsControls.changeBaseLoad(false));
   }, []);
   return (
     <>
@@ -48,11 +47,7 @@ function App()
           <MyButton
             title=" Searching reviewer..."
             callback={() => {
-              showAndChooseReviewer(
-                user,
-                generateReviewer,
-                dispath
-              );
+              dispatch(showAndChooseReviewer(user, generateReviewer));
             }}
           />
           <br />
