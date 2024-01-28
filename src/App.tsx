@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
-import MyPopup from './components/UI/Popup/MyPopup';
+import PopupSettings from './components/UI/Popup/PopupSettings';
 import { useAppDispatch } from './hooks/useTypedDispatch';
 import { useTypedSelector } from './hooks/useTypedSelector';
 import { loadingsControls } from './models/loading';
@@ -44,7 +44,7 @@ function App() {
       ) : (
         <div className="App">
           <MyButton title="Show settings" callback={handleShow} />
-          <MyPopup show={show} handleClose={handleClose} />
+          <PopupSettings show={show} handleClose={handleClose} />
           <br />
           <MyButton
             title=" Searching reviewer..."

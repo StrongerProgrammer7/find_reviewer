@@ -6,7 +6,7 @@ import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { IWorkModal } from '../../../store/interfaces/IWorkModal';
 import { StandartInput } from '../Inputs/StandartInput';
 import { saveChanges } from './utils';
-const MyPopup: FC<IWorkModal> = ({ show, handleClose }: IWorkModal) => {
+const PopupSettings: FC<IWorkModal> = ({ show, handleClose }: IWorkModal) => {
   const {blacklist,login,repo } = useTypedSelector((state) => state.userReducer);//useSelector((state: RootState) => state.userReducer);
   const dispatch = useAppDispatch();
 
@@ -69,4 +69,4 @@ const MyPopup: FC<IWorkModal> = ({ show, handleClose }: IWorkModal) => {
   );
 };
 
-export default MyPopup;
+export default PopupSettings;
