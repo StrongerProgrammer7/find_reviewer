@@ -23,6 +23,8 @@ export function userReducer(state = initialState, action: IActionUser) {
       return { ...state, repo: action.payload };
     case ActionTypes.BLACKLIST:
       return { ...state, blacklist: action.payload };
+    case ActionTypes.TOTAL_DATA_USER:
+      return { ...state,login:action.payload.login, repo:action.payload.repo, blacklist:action.payload.blacklist}
     default:
       return state;
   }
@@ -40,5 +42,9 @@ export const UserControls = {
   changeBlackList: (value: Array<string>) => ({
     type: ActionTypes.BLACKLIST,
     payload: value
+  }),
+  setAllData: (value:IUser) => ({
+    type:ActionTypes.TOTAL_DATA_USER,
+    payload:value
   })
 };

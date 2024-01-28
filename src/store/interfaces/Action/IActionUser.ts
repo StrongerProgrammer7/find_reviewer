@@ -1,5 +1,5 @@
 import { ActionTypes } from '../../enums/ActionTypes';
-
+import { IUser } from '../IDataUser';
 interface IActionLogin {
   type: ActionTypes.LOGIN;
   payload: string;
@@ -15,6 +15,11 @@ interface IActionBlackList {
   payload: Array<string>;
 }
 
-type IActionUser = IActionLogin | IActionREPO | IActionBlackList;
+interface IActionTotalData {
+  type: ActionTypes.TOTAL_DATA_USER;
+  payload:IUser
+}
+
+type IActionUser = IActionLogin | IActionREPO | IActionBlackList | IActionTotalData;
 
 export default IActionUser;

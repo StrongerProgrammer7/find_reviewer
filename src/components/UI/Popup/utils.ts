@@ -12,9 +12,7 @@ export const saveChanges = (
   data: IInputs,
   handleClose: (() => void) | undefined
 ): void => {
-  dispatch(UserControls.changeLogin(data.loginInput) as IActionUser);
-  dispatch(UserControls.changeRepo(data.repoInput) as IActionUser);
-  dispatch(UserControls.changeBlackList(dataFromStringToArray(data.blacklistInput)) as IActionUser);
+  dispatch(UserControls.setAllData({login:data.loginInput,repo:data.repoInput,blacklist:dataFromStringToArray(data.blacklistInput)}) as IActionUser)
   setLocalStorageItem(
     'userdata',
     data.loginInput + ';' + data.repoInput + ';' + data.blacklistInput
