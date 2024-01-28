@@ -1,8 +1,13 @@
 import { Dispatch, Middleware } from 'redux';
 import IAction from '../interfaces/Action/IAction';
+import { IAsyncDispatch } from '../interfaces/IAsycDispatch';
 import { RootState } from '../store';
 
-export const asyncActionsMiddleware: Middleware<{}, RootState, Dispatch> =
+export const asyncActionsMiddleware: Middleware<
+  IAsyncDispatch<RootState, IAction>,
+  RootState,
+  IAsyncDispatch<RootState, IAction>
+> =
   (store) => (next) => (action) => {
     if (typeof action === 'function') {
       console.log('ASYNC FUNCTION EXECUTION..',typeof action);
@@ -10,7 +15,11 @@ export const asyncActionsMiddleware: Middleware<{}, RootState, Dispatch> =
     }
     return next(action);
   };
+ // или 
+ /*
+Middleware<{},RootState,Dispatch>
 
+ */
 export const loggerMiddleware: Middleware<{}, RootState, Dispatch<IAction>> =
   (store) => (next) => (action) => {
     const myAction = action as IAction;
