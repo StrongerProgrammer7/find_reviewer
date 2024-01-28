@@ -8,7 +8,7 @@ import IActionReviewer from '../store/interfaces/Action/IActionReviewer';
 import IActionLoadings from '../store/interfaces/Action/IActionLoadings';
 import { IContributor, IUser } from '../store/interfaces/IDataUser';
 import { GITHUB_CLASSIS_TOKEN } from './const';
-import { RootState } from '../store/interfaces/IReducers';
+import { RootState } from '../store/store'
 
 export const getLocalStorageItem = (key: string): string | undefined => {
   if (!window.localStorage || !window.localStorage.getItem(key)) return;

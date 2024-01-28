@@ -6,7 +6,6 @@ const MyButton: FC<{ title: string; callback?: () => void }> = ({ title, callbac
   return (
     <>
       <Button variant="primary" className="mt-5" onClick={callback}>
-        {' '}
         {title}
       </Button>
     </>

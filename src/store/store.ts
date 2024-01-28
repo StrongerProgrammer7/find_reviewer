@@ -8,3 +8,5 @@ export const store = createStore(
   {},
   applyMiddleware(loggerMiddleware, asyncActionsMiddleware)
 );
+export type RootState = ReturnType<typeof combine>
+export type AppDispatch = typeof store.dispatch;

@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Spinner } from 'react-bootstrap';
 import './App.css';
 import MyButton from './components/UI/Buttons/MyButton';
 import MyPopup from './components/UI/Popup/MyPopup';
-import { setDataFromLocalStorage, showAndChooseReviewer } from './utils/helper';
-import { Spinner } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from './store/interfaces/IReducers';
+import { useAppDispatch } from './hooks/useTypedDispatch';
+import { useTypedSelector } from './hooks/useTypedSelector';
 import { loadingsControls } from './models/loading';
 import IAction from './store/interfaces/Action/IAction';
-import { Dispatch } from 'redux';
 import IActionLoadings from './store/interfaces/Action/IActionLoadings';
+import { setDataFromLocalStorage, showAndChooseReviewer } from './utils/helper';
 /*
 Analog React: Added Redux
 Test:
@@ -20,10 +19,11 @@ ipetropolsky,prizemlenie,Maxim-Do
 
 
 function App() {
-  const user = useSelector((state: RootState) => state.userReducer);
-  const reviewer = useSelector((state: RootState) => state.reviewerReducer);
-  const loadings = useSelector((state: RootState) => state.loadingsReducer);
-  const dispatch: Dispatch<IAction> = useDispatch();
+  
+  const user = useTypedSelector((state) => state.userReducer);
+  const reviewer = useTypedSelector((state) => state.reviewerReducer);
+  const loadings = useTypedSelector((state) => state.loadingsReducer);
+  const dispatch = useAppDispatch();
   const generateReviewer = useRef<null | HTMLImageElement>(null);
 
   const [show, setShow] = useState(false);

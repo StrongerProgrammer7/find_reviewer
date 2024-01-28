@@ -1,15 +1,14 @@
-import React, { FC, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { FC, useRef } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
+import { useAppDispatch } from '../../../hooks/useTypedDispatch';
+import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { IWorkModal } from '../../../store/interfaces/IWorkModal';
-import { saveChanges } from './utils';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../store/interfaces/IReducers';
 import { StandartInput } from '../Inputs/StandartInput';
-
+import { saveChanges } from './utils';
 const MyPopup: FC<IWorkModal> = ({ show, handleClose }: IWorkModal) => {
-  const user = useSelector((state: RootState) => state.userReducer);
-  const dispatch = useDispatch();
+  const {blacklist,login,repo } = useTypedSelector((state) => state.userReducer);//useSelector((state: RootState) => state.userReducer);
+  const dispatch = useAppDispatch();
 
   const loginInput = useRef<HTMLInputElement | null>(null);
   const repoInput = useRef<HTMLInputElement | null>(null);
@@ -41,19 +40,19 @@ const MyPopup: FC<IWorkModal> = ({ show, handleClose }: IWorkModal) => {
           <StandartInput
             titleLabel="Your login"
             placeholder="login"
-            _defaultValue={user.login}
+            _defaultValue={login}
             _ref={loginInput}
           />
           <StandartInput
             titleLabel="Your repo"
             placeholder="repo"
-            _defaultValue={user.repo}
+            _defaultValue={repo}
             _ref={repoInput}
           />
           <StandartInput
             titleLabel="Blacklist"
             placeholder="using ,"
-            _defaultValue={user.blacklist.toString()}
+            _defaultValue={blacklist.toString()}
             _ref={blacklistInput}
           />
         </Modal.Body>

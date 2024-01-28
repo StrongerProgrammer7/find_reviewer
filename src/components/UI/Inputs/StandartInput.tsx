@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, Ref } from 'react';
+import React, { Ref } from 'react';
 import { Form } from 'react-bootstrap';
 
 export const StandartInput = ({
