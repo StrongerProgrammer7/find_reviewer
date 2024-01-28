@@ -61,7 +61,7 @@ function App() {
         <div>
           <h1>You: {user.login}</h1>
           <h1>Reviewer: {reviewer.login}</h1>
-          <img src={reviewer.avatar_url} alt="reviwerImg" />
+          <img src={reviewer.avatarUrl} alt="reviwerImg" />
         </div>
       ) : null}
     </>

@@ -1,30 +1,24 @@
 import { ActionTypes } from '../store/enums/ActionTypes';
-import IActionReviewer from '../store/interfaces/Action/IActionReviewer';
+import IActionContributor from '../store/interfaces/Action/IActionReviewer';
 import { IContributor } from '../store/interfaces/IDataUser';
 
 const initialState: IContributor = {
   login: '',
-  avatar_url: ''
+  avatarUrl: ''
 };
 
-export function reviewerReducer(state = initialState, action: IActionReviewer) {
+export function reviewerReducer(state = initialState, action: IActionContributor) {
   switch (action.type) {
     case ActionTypes.REVIEWER:
-      return { ...state, login: action.payload };
-    case ActionTypes.AVATAR:
-      return { ...state, avatar_url: action.payload };
+      return { ...state, login: action.payload.login,avatarUrl:action.payload.avatarUrl };
     default:
       return state;
   }
 }
 
 export const reviewerControls = {
-  changeLoginReviewer: (value: string) => ({
+  changeReviewer: (value: IContributor) => ({
     type: ActionTypes.REVIEWER,
-    payload: value
-  }),
-  changeAvatarReviewer: (value: string) => ({
-    type: ActionTypes.AVATAR,
     payload: value
   })
 };

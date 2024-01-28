@@ -4,6 +4,6 @@ export interface IUser {
   blacklist: Array<string>;
 }
 export interface IContributor {
-  avatar_url: string;
+  avatarUrl: string;
   login: string;
 }

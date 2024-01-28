@@ -1,14 +1,11 @@
 import { ActionTypes } from '../../enums/ActionTypes';
+import { IContributor } from '../IDataUser';
 
-interface IActionReviewerLogin {
+interface IActionContributor {
   type: ActionTypes.REVIEWER;
-  payload: string;
+  payload: IContributor;
 }
 
-interface IActionAvatar {
-  type: ActionTypes.AVATAR;
-  payload: string;
-}
 
-type IActionReviewer = IActionReviewerLogin | IActionAvatar;
-export default IActionReviewer;
+type IActionReviewer = IActionContributor;
+export default IActionContributor;

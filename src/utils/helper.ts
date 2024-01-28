@@ -4,7 +4,7 @@ import { loadingsControls } from '../models/loading';
 import { reviewerControls } from '../models/reviewer';
 import { UserControls } from '../models/user';
 import IActionUser from '../store/interfaces/Action/IActionUser';
-import IActionReviewer from '../store/interfaces/Action/IActionReviewer';
+import IActionContributor from '../store/interfaces/Action/IActionReviewer';
 import IActionLoadings from '../store/interfaces/Action/IActionLoadings';
 import { IContributor, IUser } from '../store/interfaces/IDataUser';
 import { GITHUB_CLASSIS_TOKEN } from './const';
@@ -72,10 +72,10 @@ export const getListContributors = async (user: IUser): Promise<Array<IContribut
   if (!result) return [];
   console.log(result);
   const contributors: Array<IContributor> = result.data
-    .map((contributor: IContributor) => {
+    .map((contributor: {login:string,avatar_url:string}) => {
       if (!contributor.login) return null;
       if (isContributorToBlacklist(contributor.login, user.blacklist))
-        return { avatar_url: contributor.avatar_url, login: contributor.login } as IContributor;
+        return { avatarUrl: contributor.avatar_url, login: contributor.login } as IContributor;
       return null;
     })
     .filter((contributor: IContributor) => contributor !== null) as IContributor[];
@@ -87,7 +87,7 @@ function displayNextImage(
   contributors: Array<IContributor>,
   index: number
 ): number {
-  if (generateReviewer.current) generateReviewer.current.src = contributors[index].avatar_url;
+  if (generateReviewer.current) generateReviewer.current.src = contributors[index].avatarUrl;
 
   return getRandomNumber(0, contributors.length - 1);
 }
@@ -95,9 +95,8 @@ function stopInterval(interval: NodeJS.Timer) {
   clearInterval(interval);
 }
 
-function setReviewer(dispatch: Dispatch<IActionReviewer>, contributor: IContributor) {
-  dispatch(reviewerControls.changeAvatarReviewer(contributor.avatar_url) as IActionReviewer);
-  dispatch(reviewerControls.changeLoginReviewer(contributor.login) as IActionReviewer);
+function setReviewer(dispatch: Dispatch<IActionContributor>, contributor: IContributor) {
+  dispatch(reviewerControls.changeReviewer({login:contributor.login,avatarUrl:contributor.avatarUrl}) as IActionContributor);
 }
 
 export const showAndChooseReviewer =
@@ -108,12 +107,12 @@ export const showAndChooseReviewer =
     timeSlideShowImg: number = 200,
     timeUpIterationSlideShow: number = 500
   ) =>
-  async (dispatch: Dispatch<IActionReviewer | IActionLoadings>, getState: () => RootState) => {
+  async (dispatch: Dispatch<IActionContributor | IActionLoadings>, getState: () => RootState) => {
     dispatch(loadingsControls.changeBaseLoad(true) as IActionLoadings);
-    setReviewer(dispatch, { login: '', avatar_url: '' });
+    setReviewer(dispatch, { login: '', avatarUrl: '' });
     const contributors: Array<IContributor> = await getListContributors(user);
     if (contributors.length === 0) {
-      setReviewer(dispatch, { login: 'Not find reviewer so as not exists', avatar_url: '' });
+      setReviewer(dispatch, { login: 'Not find reviewer so as not exists', avatarUrl: '' });
       return;
     }
     console.log(contributors);

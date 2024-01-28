@@ -24,7 +24,7 @@ export function userReducer(state = initialState, action: IActionUser) {
     case ActionTypes.BLACKLIST:
       return { ...state, blacklist: action.payload };
     case ActionTypes.TOTAL_DATA_USER:
-      return { ...state,login:action.payload.login, repo:action.payload.repo, blacklist:action.payload.blacklist}
+      return {...action.payload};//{ ...state,login:action.payload.login, repo:action.payload.repo, blacklist:action.payload.blacklist}
     default:
       return state;
   }

@@ -8,9 +8,9 @@ const initialState: ILoadings = {
 
 export function loadingsReducer(state = initialState, action: IActionLoadings) {
   switch (action.type) {
-    case ActionTypes.BASELOADING:
+    case ActionTypes.BASE_LOADING:
       return { ...state, baseLoad: action.payload };
-    case ActionTypes.LOADSHOWREVIEWER:
+    case ActionTypes.LOAD_SHOW_REVIEWER:
       return { ...state, loadReadyShowReviewer: action.payload };
     default:
       return state;
@@ -19,11 +19,11 @@ export function loadingsReducer(state = initialState, action: IActionLoadings) {
 
 export const loadingsControls = {
   changeBaseLoad: (value: boolean) => ({
-    type: ActionTypes.BASELOADING,
+    type: ActionTypes.BASE_LOADING,
     payload: value
   }),
   changeLoadShowReviewer: (value: boolean) => ({
-    type: ActionTypes.LOADSHOWREVIEWER,
+    type: ActionTypes.LOAD_SHOW_REVIEWER,
     payload: value
   })
 };

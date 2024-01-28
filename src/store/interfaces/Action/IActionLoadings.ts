@@ -1,12 +1,12 @@
 import { ActionTypes } from '../../enums/ActionTypes';
 
 interface IActionBaseLoad {
-  type: ActionTypes.BASELOADING;
+  type: ActionTypes.BASE_LOADING;
   payload: boolean;
 }
 
 interface IActionLoadShowReviewer {
-  type: ActionTypes.LOADSHOWREVIEWER;
+  type: ActionTypes.LOAD_SHOW_REVIEWER;
   payload: boolean;
 }
 
