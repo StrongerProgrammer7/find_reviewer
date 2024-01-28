@@ -91,9 +91,6 @@ function displayNextImage(
 
   return getRandomNumber(0, contributors.length - 1);
 }
-function stopInterval(interval: NodeJS.Timer) {
-  clearInterval(interval);
-}
 
 function setReviewer(dispatch: Dispatch<IActionContributor>, contributor: IContributor) {
   dispatch(reviewerControls.changeReviewer({login:contributor.login,avatarUrl:contributor.avatarUrl}) as IActionContributor);
@@ -129,11 +126,11 @@ export const showAndChooseReviewer =
     const iteration = setInterval(() => {
       currentIteration++;
       if (currentIteration >= maxIterations) {
-        stopInterval(slideshowInterval);
+        clearInterval(slideshowInterval);
         dispatch(loadingsControls.changeLoadShowReviewer(false) as IActionLoadings);
         dispatch(loadingsControls.changeBaseLoad(false) as IActionLoadings);
         setReviewer(dispatch, contributors[currentIndex]);
-        stopInterval(iteration);
+        clearInterval(iteration);
       }
     }, timeUpIterationSlideShow);
   };
