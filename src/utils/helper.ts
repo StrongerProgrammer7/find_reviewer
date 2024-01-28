@@ -110,6 +110,7 @@ export const showAndChooseReviewer =
   ) =>
   async (dispatch: Dispatch<IActionReviewer | IActionLoadings>, getState: () => RootState) => {
     dispatch(loadingsControls.changeBaseLoad(true) as IActionLoadings);
+    setReviewer(dispatch, { login: '', avatar_url: '' });
     const contributors: Array<IContributor> = await getListContributors(user);
     if (contributors.length === 0) {
       setReviewer(dispatch, { login: 'Not find reviewer so as not exists', avatar_url: '' });

@@ -2,11 +2,11 @@ import { Dispatch, Middleware } from 'redux';
 import IAction from '../interfaces/Action/IAction';
 import { RootState } from '../interfaces/IReducers';
 
-export const asyncActionsMiddleware: Middleware<{}, RootState, Dispatch<IAction>> =
+export const asyncActionsMiddleware: Middleware<{}, RootState, Dispatch> =
   (store) => (next) => (action) => {
     if (typeof action === 'function') {
       console.log('ASYNC FUNCTION EXECUTION..');
-      return action(store.dispatch, store.getState);
+      return action(store.dispatch, store.getState); // Сюда никогда не попадает
     }
     console.log('ASYNC ', action);
     return next(action);

@@ -7,6 +7,9 @@ import { Spinner } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './store/interfaces/IReducers';
 import { loadingsControls } from './models/loading';
+import IAction from './store/interfaces/Action/IAction';
+import { Dispatch } from 'redux';
+import IActionLoadings from './store/interfaces/Action/IActionLoadings';
 /*
 Analog React: Added Redux
 Test:
@@ -15,13 +18,12 @@ eslint-config-hh
 ipetropolsky,prizemlenie,Maxim-Do
 */
 
-//Аргумент типа "() => Promise<void>" нельзя назначить параметру типа "UnknownAction".
 
 function App() {
   const user = useSelector((state: RootState) => state.userReducer);
   const reviewer = useSelector((state: RootState) => state.reviewerReducer);
   const loadings = useSelector((state: RootState) => state.loadingsReducer);
-  const dispatch = useDispatch();
+  const dispatch: Dispatch<IAction> = useDispatch();
   const generateReviewer = useRef<null | HTMLImageElement>(null);
 
   const [show, setShow] = useState(false);
@@ -31,7 +33,7 @@ function App() {
 
   useEffect(() => {
     setDataFromLocalStorage(dispatch, 'userdata');
-    dispatch(loadingsControls.changeBaseLoad(false));
+    dispatch(loadingsControls.changeBaseLoad(false) as IActionLoadings);
   }, []);
   return (
     <>
@@ -47,7 +49,7 @@ function App() {
           <MyButton
             title=" Searching reviewer..."
             callback={() => {
-              dispatch(showAndChooseReviewer(user, generateReviewer));
+              dispatch(showAndChooseReviewer(user, generateReviewer) as unknown as IAction);
             }}
           />
           <br />
