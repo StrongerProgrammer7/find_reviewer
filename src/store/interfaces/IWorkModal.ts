@@ -1,5 +1,5 @@
 export interface IWorkModal {
   show: boolean;
-  handleShow?: () => void;
-  handleClose?: () => void;
+  handleShow?: VoidFunction;
+  handleClose?: VoidFunction;
 }
