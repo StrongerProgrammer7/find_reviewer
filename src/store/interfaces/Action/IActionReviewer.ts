@@ -6,6 +6,9 @@ interface IActionContributor {
   payload: IContributor;
 }
 
-
-type IActionReviewer = IActionContributor;
+interface IActionGenerateContributorImgSrc {
+  type:ActionTypes.GENERATE_REVIEWER_IMGS;
+  payload: string
+}
+export type IActionReviewer = IActionContributor | IActionGenerateContributorImgSrc;
 export default IActionContributor;

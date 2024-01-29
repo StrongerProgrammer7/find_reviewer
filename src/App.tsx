@@ -24,7 +24,6 @@ function App() {
   const reviewer = useTypedSelector((state) => state.reviewerReducer);
   const loadings = useTypedSelector((state) => state.loadingsReducer);
   const dispatch = useAppDispatch();
-  const generateReviewer = useRef<null | HTMLImageElement>(null);
 
   const [show, setShow] = useState(false);
 
@@ -49,14 +48,14 @@ function App() {
           <MyButton
             title=" Searching reviewer..."
             callback={() => {
-              dispatch(showAndChooseReviewer(user, generateReviewer) as unknown as IAction);
+              dispatch(showAndChooseReviewer() as unknown as IAction);
             }}
           />
           <br />
         </div>
       )}
       <br />
-      {loadings.loadReadyShowReviewer ? <img ref={generateReviewer} alt="iterationImgs" /> : null}
+      {loadings.loadReadyShowReviewer ? <img src={reviewer.generateReviewerImgSrc} alt="iterationImgs" /> : null}
       {reviewer.login !== '' ? (
         <div>
           <h1>You: {user.login}</h1>

@@ -6,4 +6,5 @@ export interface IUser {
 export interface IContributor {
   avatarUrl: string;
   login: string;
+  generateReviewerImgSrc?: string
 }

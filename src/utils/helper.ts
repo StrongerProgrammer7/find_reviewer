@@ -4,7 +4,7 @@ import { loadingsControls } from '../models/loading';
 import { reviewerControls } from '../models/reviewer';
 import { UserControls } from '../models/user';
 import IActionUser from '../store/interfaces/Action/IActionUser';
-import IActionContributor from '../store/interfaces/Action/IActionReviewer';
+import IActionContributor, { IActionReviewer } from '../store/interfaces/Action/IActionReviewer';
 import IActionLoadings from '../store/interfaces/Action/IActionLoadings';
 import { IContributor, IUser } from '../store/interfaces/IDataUser';
 import { GITHUB_CLASSIS_TOKEN } from './const';
@@ -83,12 +83,11 @@ export const getListContributors = async (user: IUser): Promise<Array<IContribut
 };
 
 function displayNextImage(
-  generateReviewer: React.RefObject<HTMLImageElement>,
+  dispatch:Dispatch<IActionReviewer>,
   contributors: Array<IContributor>,
   index: number
 ): number {
-  if (generateReviewer.current) generateReviewer.current.src = contributors[index].avatarUrl;
-
+  dispatch(reviewerControls.changeGenerateReviewerSRC(contributors[index].avatarUrl) as IActionReviewer);
   return getRandomNumber(0, contributors.length - 1);
 }
 
@@ -98,13 +97,12 @@ function setReviewer(dispatch: Dispatch<IActionContributor>, contributor: IContr
 
 export const showAndChooseReviewer =
   (
-    user: IUser,
-    generateReviewer: React.RefObject<HTMLImageElement>,
     maxIterations: number = 10,
     timeSlideShowImg: number = 200,
     timeUpIterationSlideShow: number = 500
   ) =>
-  async (dispatch: Dispatch<IActionContributor | IActionLoadings>, getState: () => RootState) => {
+  async (dispatch: Dispatch<IActionReviewer | IActionLoadings>, getState: () => RootState) => {
+    const user = getState().userReducer;
     dispatch(loadingsControls.changeBaseLoad(true) as IActionLoadings);
     setReviewer(dispatch, { login: '', avatarUrl: '' });
     const contributors: Array<IContributor> = await getListContributors(user);
@@ -118,7 +116,7 @@ export const showAndChooseReviewer =
     let currentIndex: number = 0;
 
     const slideshowInterval = setInterval(() => {
-      currentIndex = displayNextImage(generateReviewer, contributors, currentIndex);
+      currentIndex = displayNextImage(dispatch,contributors, currentIndex);
     }, timeSlideShowImg);
 
     let currentIteration = 0;
