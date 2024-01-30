@@ -20,6 +20,11 @@ interface IActionTotalData {
   payload:IUser
 }
 
-type IActionUser = IActionLogin | IActionREPO | IActionBlackList | IActionTotalData;
+interface IActionLoad {
+  type: ActionTypes.LOADING_DATA_USER;
+  payload: boolean;
+}
+
+type IActionUser = IActionLogin | IActionREPO | IActionBlackList | IActionTotalData | IActionLoad;
 
 export default IActionUser;

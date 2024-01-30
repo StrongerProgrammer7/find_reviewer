@@ -1,11 +1,9 @@
 import { Octokit } from 'octokit';
 import { Dispatch } from 'redux';
-import { loadingsControls } from '../models/loading';
 import { reviewerControls } from '../models/reviewer';
 import { UserControls } from '../models/user';
 import IActionUser from '../store/interfaces/Action/IActionUser';
 import IActionContributor, { IActionReviewer } from '../store/interfaces/Action/IActionReviewer';
-import IActionLoadings from '../store/interfaces/Action/IActionLoadings';
 import { IContributor, IUser } from '../store/interfaces/IDataUser';
 import { GITHUB_CLASSIS_TOKEN } from './const';
 import { RootState } from '../store/store'
@@ -101,9 +99,9 @@ export const showAndChooseReviewer =
     timeSlideShowImg: number = 200,
     timeUpIterationSlideShow: number = 500
   ) =>
-  async (dispatch: Dispatch<IActionReviewer | IActionLoadings>, getState: () => RootState) => {
+  async (dispatch: Dispatch<IActionReviewer | IActionUser>, getState: () => RootState) => {
     const user = getState().userReducer;
-    dispatch(loadingsControls.changeBaseLoad(true) as IActionLoadings);
+    dispatch(UserControls.setLoading(true) as IActionUser);
     setReviewer(dispatch, { login: '', avatarUrl: '' });
     const contributors: Array<IContributor> = await getListContributors(user);
     if (contributors.length === 0) {
@@ -111,7 +109,7 @@ export const showAndChooseReviewer =
       return;
     }
     console.log(contributors);
-    dispatch(loadingsControls.changeLoadShowReviewer(true) as IActionLoadings);
+    dispatch(reviewerControls.setLoading(true) as IActionReviewer);
 
     let currentIndex: number = 0;
 
@@ -125,8 +123,8 @@ export const showAndChooseReviewer =
       currentIteration++;
       if (currentIteration >= maxIterations) {
         clearInterval(slideshowInterval);
-        dispatch(loadingsControls.changeLoadShowReviewer(false) as IActionLoadings);
-        dispatch(loadingsControls.changeBaseLoad(false) as IActionLoadings);
+        dispatch(reviewerControls.setLoading(false) as IActionReviewer);
+        dispatch(UserControls.setLoading(false) as IActionUser);
         setReviewer(dispatch, contributors[currentIndex]);
         clearInterval(iteration);
       }

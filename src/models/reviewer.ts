@@ -5,7 +5,8 @@ import { IContributor } from '../store/interfaces/IDataUser';
 const initialState: IContributor = {
   login: '',
   avatarUrl: '',
-  generateReviewerImgSrc: ''
+  generateReviewerImgSrc: '',
+  loading:false
 };
 
 export function reviewerReducer(state = initialState, action: IActionReviewer) {
@@ -14,6 +15,8 @@ export function reviewerReducer(state = initialState, action: IActionReviewer) {
       return { ...state, login: action.payload.login,avatarUrl:action.payload.avatarUrl };
     case ActionTypes.GENERATE_REVIEWER_IMGS:
       return { ...state, generateReviewerImgSrc:action.payload}
+    case ActionTypes.LOAD_SHOW_REVIEWER:
+      return { ... state, loading:action.payload};
     default:
       return state;
   }
@@ -27,5 +30,9 @@ export const reviewerControls = {
   changeGenerateReviewerSRC: (src:string) =>({
     type:ActionTypes.GENERATE_REVIEWER_IMGS,
     payload:src
+  }),
+  setLoading: (value:boolean) =>({
+    type: ActionTypes.LOAD_SHOW_REVIEWER,
+    payload:value
   })
 };

@@ -5,9 +5,9 @@ import MyButton from './components/UI/Buttons/MyButton';
 import PopupSettings from './components/UI/Popup/PopupSettings';
 import { useAppDispatch } from './hooks/useTypedDispatch';
 import { useTypedSelector } from './hooks/useTypedSelector';
-import { loadingsControls } from './models/loading';
+import { UserControls } from './models/user';
 import IAction from './store/interfaces/Action/IAction';
-import IActionLoadings from './store/interfaces/Action/IActionLoadings';
+import IActionUser from './store/interfaces/Action/IActionUser';
 import { setDataFromLocalStorage, showAndChooseReviewer } from './utils/helper';
 /*
 Analog React: Added Redux
@@ -22,7 +22,6 @@ function App() {
   
   const user = useTypedSelector((state) => state.userReducer);
   const reviewer = useTypedSelector((state) => state.reviewerReducer);
-  const loadings = useTypedSelector((state) => state.loadingsReducer);
   const dispatch = useAppDispatch();
 
   const [show, setShow] = useState(false);
@@ -32,11 +31,11 @@ function App() {
 
   useEffect(() => {
     setDataFromLocalStorage(dispatch, 'userdata');
-    dispatch(loadingsControls.changeBaseLoad(false) as IActionLoadings);
+    dispatch(UserControls.setLoading(false) as IActionUser);
   }, []);
   return (
     <>
-      {loadings.baseLoad ? (
+      {user.loading ? (
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
@@ -55,7 +54,7 @@ function App() {
         </div>
       )}
       <br />
-      {loadings.loadReadyShowReviewer ? <img src={reviewer.generateReviewerImgSrc} alt="iterationImgs" /> : null}
+      {reviewer.loading ? <img src={reviewer.generateReviewerImgSrc} alt="iterationImgs" /> : null}
       {reviewer.login !== '' ? (
         <div>
           <h1>You: {user.login}</h1>

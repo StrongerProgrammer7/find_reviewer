@@ -10,5 +10,12 @@ interface IActionGenerateContributorImgSrc {
   type:ActionTypes.GENERATE_REVIEWER_IMGS;
   payload: string
 }
-export type IActionReviewer = IActionContributor | IActionGenerateContributorImgSrc;
+
+interface IActionLoadShowReviewer {
+  type: ActionTypes.LOAD_SHOW_REVIEWER;
+  payload: boolean;
+}
+
+
+export type IActionReviewer = IActionContributor | IActionGenerateContributorImgSrc | IActionLoadShowReviewer;
 export default IActionContributor;

@@ -12,7 +12,8 @@ const initialState: IUser = {
     'xtabay',
     'AndreyGladkov',
     'kirillgalushko'
-  ]
+  ],
+  loading:false
 };
 
 export function userReducer(state = initialState, action: IActionUser) {
@@ -25,6 +26,8 @@ export function userReducer(state = initialState, action: IActionUser) {
       return { ...state, blacklist: action.payload };
     case ActionTypes.TOTAL_DATA_USER:
       return {...action.payload};//{ ...state,login:action.payload.login, repo:action.payload.repo, blacklist:action.payload.blacklist}
+    case ActionTypes.LOADING_DATA_USER:
+      return {...state, loading:action.payload};
     default:
       return state;
   }
@@ -45,6 +48,10 @@ export const UserControls = {
   }),
   setAllData: (value:IUser) => ({
     type:ActionTypes.TOTAL_DATA_USER,
+    payload:value
+  }),
+  setLoading: (value:boolean) => ({
+    type:ActionTypes.LOADING_DATA_USER,
     payload:value
   })
 };
