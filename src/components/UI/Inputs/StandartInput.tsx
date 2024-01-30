@@ -4,8 +4,8 @@ import { Form } from 'react-bootstrap';
 export const StandartInput = ({
   titleLabel,
   placeholder,
-  _defaultValue,
-  _ref,
+  _defaultValue: defaultValue,
+  _ref: ref,
   type = 'text'
 }: {
   titleLabel: string;
@@ -21,8 +21,8 @@ export const StandartInput = ({
         <Form.Control
           type={type}
           placeholder={placeholder}
-          defaultValue={_defaultValue}
-          ref={_ref}
+          defaultValue={defaultValue}
+          ref={ref}
         />
       </Form.Group>
     </>
