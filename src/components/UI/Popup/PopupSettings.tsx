@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { FC, useRef } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useAppDispatch } from '../../../hooks/useTypedDispatch';

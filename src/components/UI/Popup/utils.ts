@@ -17,5 +17,5 @@ export const saveChanges = (
     'userdata',
     data.loginInput + ';' + data.repoInput + ';' + data.blacklistInput
   );
-  if (handleClose) handleClose();
+  handleClose?.();
 };
