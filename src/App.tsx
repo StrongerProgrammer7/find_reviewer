@@ -36,7 +36,7 @@ function App() {
   }, []);
   return (
     <>
-      {loadings.baseLoad === true ? (
+      {loadings.baseLoad ? (
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
