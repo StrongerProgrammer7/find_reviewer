@@ -13,7 +13,7 @@ const initialState: IUser = {
     'AndreyGladkov',
     'kirillgalushko'
   ],
-  loading:false
+  loading:true
 };
 
 export function userReducer(state = initialState, action: IActionUser) {
