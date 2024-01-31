@@ -7,6 +7,7 @@ import { useAppDispatch } from './hooks/useTypedDispatch';
 import { useTypedSelector } from './hooks/useTypedSelector';
 import { UserControls } from './models/user';
 import IAction from './store/interfaces/Action/IAction';
+import { IActionReviewer } from './store/interfaces/Action/IActionReviewer';
 import IActionUser from './store/interfaces/Action/IActionUser';
 import { setDataFromLocalStorage, showAndChooseReviewer } from './utils/helper';
 /*
@@ -47,7 +48,7 @@ function App() {
           <MyButton
             title=" Searching reviewer..."
             callback={() => {
-              dispatch(showAndChooseReviewer() as unknown as IAction);
+              dispatch(showAndChooseReviewer() ); //При проблеме с типизацией as unkown as IAction
             }}
           />
           <br />
