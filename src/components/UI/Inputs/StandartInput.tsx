@@ -1,19 +1,15 @@
-import React, { forwardRef, Ref } from 'react';
+import { forwardRef } from 'react';
 import { Form } from 'react-bootstrap';
 
-export const StandartInput = forwardRef(({
-  titleLabel,
-  placeholder,
-  defaultValue,
-  ref,
-  type = 'text'
-}: {
-  titleLabel: string;
-  placeholder: string;
-  defaultValue: string;
-  ref: Ref<HTMLInputElement>;
-  type?: string;
-}) => {
+interface IPropsInput
+{
+  titleLabel:string, 
+  placeholder:string, 
+  defaultValue:string, 
+  type?:string
+}
+export const StandartInput = forwardRef<HTMLInputElement, IPropsInput>(
+  ({ titleLabel, placeholder, defaultValue, type="text" }, ref) => {
   return (
     <>
       <Form.Group>

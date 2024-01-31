@@ -85,12 +85,12 @@ function displayNextImage(
   contributors: Array<IContributor>,
   index: number
 ): number {
-  dispatch(reviewerControls.changeGenerateReviewerSRC(contributors[index].avatarUrl) as IActionReviewer);
+  dispatch(reviewerControls.changeGenerateReviewerSRC(contributors[index].avatarUrl));
   return getRandomNumber(0, contributors.length - 1);
 }
 
-function setReviewer(dispatch: Dispatch<IActionContributor>, contributor: IContributor) {
-  dispatch(reviewerControls.changeReviewer({login:contributor.login,avatarUrl:contributor.avatarUrl}) as IActionContributor);
+function setReviewer(dispatch: Dispatch<IActionReviewer>, contributor: IContributor) {
+  dispatch(reviewerControls.changeReviewer({login:contributor.login,avatarUrl:contributor.avatarUrl}));
 }
 
 export const showAndChooseReviewer =
@@ -101,7 +101,7 @@ export const showAndChooseReviewer =
   ) =>
   async (dispatch: Dispatch<IActionReviewer | IActionUser>, getState: () => RootState) => {
     const user = getState().userReducer;
-    dispatch(UserControls.setLoading(true) as IActionUser);
+    dispatch(UserControls.setLoading(true));
     setReviewer(dispatch, { login: '', avatarUrl: '' });
     const contributors: Array<IContributor> = await getListContributors(user);
     if (contributors.length === 0) {
@@ -109,7 +109,7 @@ export const showAndChooseReviewer =
       return;
     }
     console.log(contributors);
-    dispatch(reviewerControls.setLoading(true) as IActionReviewer);
+    dispatch(reviewerControls.setLoading(true));
 
     let currentIndex: number = 0;
 
@@ -123,8 +123,8 @@ export const showAndChooseReviewer =
       currentIteration++;
       if (currentIteration >= maxIterations) {
         clearInterval(slideshowInterval);
-        dispatch(reviewerControls.setLoading(false) as IActionReviewer);
-        dispatch(UserControls.setLoading(false) as IActionUser);
+        dispatch(reviewerControls.setLoading(false));
+        dispatch(UserControls.setLoading(false));
         setReviewer(dispatch, contributors[currentIndex]);
         clearInterval(iteration);
       }

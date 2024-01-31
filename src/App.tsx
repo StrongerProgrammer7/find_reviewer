@@ -31,7 +31,7 @@ function App() {
 
   useEffect(() => {
     setDataFromLocalStorage(dispatch, 'userdata');
-    dispatch(UserControls.setLoading(false) as IActionUser);
+    dispatch(UserControls.setLoading(false));
   }, []);
   return (
     <>

@@ -34,23 +34,23 @@ export function userReducer(state = initialState, action: IActionUser) {
 }
 
 export const UserControls = {
-  changeLogin: (value: string) => ({
+  changeLogin: (value: string):IActionUser => ({
     type: ActionTypes.LOGIN,
     payload: value
   }),
-  changeRepo: (value: string) => ({
+  changeRepo: (value: string):IActionUser => ({
     type: ActionTypes.REPO,
     payload: value
   }),
-  changeBlackList: (value: Array<string>) => ({
+  changeBlackList: (value: Array<string>):IActionUser => ({
     type: ActionTypes.BLACKLIST,
     payload: value
   }),
-  setAllData: (value:IUser) => ({
+  setAllData: (value:IUser):IActionUser => ({
     type:ActionTypes.TOTAL_DATA_USER,
     payload:value
   }),
-  setLoading: (value:boolean) => ({
+  setLoading: (value:boolean):IActionUser => ({
     type:ActionTypes.LOADING_DATA_USER,
     payload:value
   })

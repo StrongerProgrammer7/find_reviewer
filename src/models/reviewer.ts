@@ -23,15 +23,15 @@ export function reviewerReducer(state = initialState, action: IActionReviewer) {
 }
 
 export const reviewerControls = {
-  changeReviewer: (value: IContributor) => ({
+  changeReviewer: (value: IContributor):IActionReviewer => ({
     type: ActionTypes.REVIEWER,
     payload: value
   }),
-  changeGenerateReviewerSRC: (src:string) =>({
+  changeGenerateReviewerSRC: (src:string):IActionReviewer =>({
     type:ActionTypes.GENERATE_REVIEWER_IMGS,
     payload:src
   }),
-  setLoading: (value:boolean) =>({
+  setLoading: (value:boolean):IActionReviewer =>({
     type: ActionTypes.LOAD_SHOW_REVIEWER,
     payload:value
   })
