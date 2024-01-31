@@ -40,20 +40,20 @@ const PopupSettings: FC<IWorkModal> = ({ show, handleClose }: IWorkModal) => {
           <StandartInput
             titleLabel="Your login"
             placeholder="login"
-            _defaultValue={login}
-            _ref={loginInput}
+            defaultValue={login}
+            ref={loginInput}
           />
           <StandartInput
             titleLabel="Your repo"
             placeholder="repo"
-            _defaultValue={repo}
-            _ref={repoInput}
+            defaultValue={repo}
+            ref={repoInput}
           />
           <StandartInput
             titleLabel="Blacklist"
             placeholder="using ,"
-            _defaultValue={blacklist.toString()}
-            _ref={blacklistInput}
+            defaultValue={blacklist.toString()}
+            ref={blacklistInput}
           />
         </Modal.Body>
         <Modal.Footer>

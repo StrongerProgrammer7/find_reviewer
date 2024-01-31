@@ -1,17 +1,17 @@
-import React, { Ref } from 'react';
+import React, { forwardRef, Ref } from 'react';
 import { Form } from 'react-bootstrap';
 
-export const StandartInput = ({
+export const StandartInput = forwardRef(({
   titleLabel,
   placeholder,
-  _defaultValue: defaultValue,
-  _ref: ref,
+  defaultValue,
+  ref,
   type = 'text'
 }: {
   titleLabel: string;
   placeholder: string;
-  _defaultValue: string;
-  _ref: Ref<HTMLInputElement>;
+  defaultValue: string;
+  ref: Ref<HTMLInputElement>;
   type?: string;
 }) => {
   return (
@@ -27,4 +27,4 @@ export const StandartInput = ({
       </Form.Group>
     </>
   );
-};
+});
