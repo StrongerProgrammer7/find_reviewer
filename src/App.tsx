@@ -6,9 +6,6 @@ import PopupSettings from './components/UI/Popup/PopupSettings';
 import { useAppDispatch } from './hooks/useTypedDispatch';
 import { useTypedSelector } from './hooks/useTypedSelector';
 import { UserControls } from './models/user';
-import IAction from './store/interfaces/Action/IAction';
-import { IActionReviewer } from './store/interfaces/Action/IActionReviewer';
-import IActionUser from './store/interfaces/Action/IActionUser';
 import { setDataFromLocalStorage, showAndChooseReviewer } from './utils/helper';
 /*
 Analog React: Added Redux
@@ -19,8 +16,8 @@ ipetropolsky,prizemlenie,Maxim-Do
 */
 
 
-function App() {
-  
+function App() 
+{
   const user = useTypedSelector((state) => state.userReducer);
   const reviewer = useTypedSelector((state) => state.reviewerReducer);
   const dispatch = useAppDispatch();

@@ -35,8 +35,29 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
-    ]
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "./"
+    },
+    "plugins": ["@typescript-eslint","prettier"],
+    "rules": {
+      "no-unused-vars": 1,
+      "no-var": "error",
+      "semi": "error",
+      "no-multi-spaces": "error",
+      "space-in-parens": "error",
+      "no-multiple-empty-lines": "error",
+      "prefer-const": "error",
+      "no-use-before-define": "error",
+      "prettier/prettier": ["warn"],
+      "brace-style": ["error", "allman"]
+    },
+    "root": true
   },
   "browserslist": {
     "production": [
@@ -51,6 +72,8 @@
     ]
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.7.0",
     "prettier": "^3.2.4"
   }
 }
